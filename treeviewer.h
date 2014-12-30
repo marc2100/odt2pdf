@@ -24,6 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <gtk/gtk.h>
 #include "treeviewer.h"
 #include "buttons.h"
+#include "dir_read.h"
+
 
 struct GUI_ELEMENTE{
 	GtkWidget *mainwindow;

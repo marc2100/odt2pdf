@@ -44,27 +44,8 @@ gboolean thread_catcher_refresh (gpointer data);
 
 void button_refresh_clicked(GtkWidget *widget, gpointer data)
 {
-	GDir *dir = NULL;
-	GError *error = NULL;
-	gchar *dir_entries = NULL;
-	//Ordner öffnen
-	dir = g_dir_open(keyfile_get_dir(),0,error);
-	//auf Fehler prüfen
-	if (error!=NULL){
-		g_error("%s",error->message);
-		g_error_free(error);
-		error = NULL;
-	}
-	//ersten Eintrag lesen
-	dir_entries = g_dir_read_name(dir);
-	do{
-	//Einträge ausgeben
-	g_print("%s\n",dir_entries);
-	//Schleife solange wiederholen, bis keine Einträge mehr vorhanden (=NULL)
-	}while (dir_entries = g_dir_read_name(dir));
-	//Ordner wieder schließen
-	g_dir_close(dir);
-	return;
+	ordner_auslesen();
+
 }
 
 void button_exit_clicked(GtkWidget *widget, gpointer data)

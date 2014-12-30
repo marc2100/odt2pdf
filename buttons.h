@@ -23,6 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include "treeviewer.h"
+#include "dir_read.h"
+#include "keyfile.h"
 
 //G_CALLBACK-Funktionen
 void button_refresh_clicked(GtkWidget *widget, gpointer data);

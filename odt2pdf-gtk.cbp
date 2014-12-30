@@ -29,15 +29,31 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="`pkg-config gtk+-2.0 --cflags`" />
 			<Add option="-Wall" />
+			<Add option="`pkg-config gtk+-3.0 --cflags`" />
 		</Compiler>
 		<Linker>
-			<Add option="`pkg-config gtk+-2.0 --libs`" />
+			<Add option="`pkg-config gtk+-3.0 --libs`" />
 		</Linker>
+		<Unit filename="buttons.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="buttons.h" />
+		<Unit filename="dir_read.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="dir_read.h" />
+		<Unit filename="keyfile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="keyfile.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="treeviewer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="treeviewer.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

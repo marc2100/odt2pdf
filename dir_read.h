@@ -16,26 +16,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-#ifndef KEYFILE_H
-#define KEYFILE_H
+#ifndef DIR_READ_H
+#define DIR_READ_H
 
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include "treeviewer.h"
+#include "buttons.h"
 
-#define keyfile_file "odt2pdf-gtk"
+///ließt die Einträge aus dem in der Keyfile
+///angegebenen Ordner aus
+void ordner_auslesen (void);
 
-///läd die Keyfile *filename oder bie NULL die default keyfile_file
-///@return true bei erfolg, bei fehlern false
-gboolean keyfile_init (const gchar *filename);
-
-
-///gibt einen String mit dem Verzeichnis zurück, dass eingelesen werden soll
-///@warning muss mit g_free freigegeben werden
-///@return gchar *dir
-gchar *keyfile_get_searchdir (void);
-
-
-
-#endif // KEYFILE_H
+#endif // DIR_READ_H

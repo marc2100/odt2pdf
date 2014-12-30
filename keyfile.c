@@ -70,7 +70,7 @@ gboolean keyfile_init (const gchar *filename){
 ///@warning muss mit g_free freigegeben werden
 ///@return gchar *dir
 
-gchar *keyfile_get_dir (void)
+gchar *keyfile_get_searchdir (void)
 {
 GError *error = NULL;
 gchar *dir = NULL;
