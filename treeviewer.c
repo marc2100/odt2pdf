@@ -21,8 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //globale Variablen
 struct GUI_ELEMENTE gui_global;
 //globaler Eintrag für Spaltennamen
-gchar * const string_viewer_header[] = {"ID","Index","Name","Rasse","Farbe","Geschlecht","Vater","Mutter","Stockmaß","Nachkommen",
-																"Verwendung","verkäuflich","Herkunftsland","Marke","Bild","Geburtstag"};
+gchar * const string_viewer_header[] = {"ID","Pfad"};
 //lokale funtionen
 //füllt das Modell mit daten
 void fill_modell ();
@@ -37,29 +36,18 @@ void gui_init (void){
 
 	gui->mainwindow 		= GTK_WIDGET (gtk_builder_get_object(builder,"window1"));
 	gui->treeview				= GTK_WIDGET (gtk_builder_get_object(builder,"treeview1"));
-	gui->texteingabe		= GTK_WIDGET (gtk_builder_get_object(builder,"entry1"));
 	gui->button_refresh	= GTK_WIDGET (gtk_builder_get_object(builder,"button_refresh"));
 	gui->button_exit		= GTK_WIDGET (gtk_builder_get_object(builder,"button_exit"));
-	gui->statusbar		= GTK_WIDGET (gtk_builder_get_object(builder,"statusbar1"));
-	gui->texteingabe_spalten_anzahl= GTK_WIDGET (gtk_builder_get_object(builder,"entry2"));
-	gui->spinner				= GTK_WIDGET (gtk_builder_get_object(builder,"spinner1"));
+	gui->statusbar			= GTK_WIDGET (gtk_builder_get_object(builder,"statusbar1"));
 
 	//Eigenschaften des Main-Window setzen
-	gtk_window_set_title(GTK_WINDOW(gui->mainwindow), "MySQL-Viewer");
+	gtk_window_set_title(GTK_WINDOW(gui->mainwindow), "odt2pft-gtkr");
   gtk_window_set_default_size(GTK_WINDOW(gui->mainwindow), 1500, 400);
   gtk_window_set_position(GTK_WINDOW(gui->mainwindow), GTK_WIN_POS_CENTER);
 
 
-	//GtkSpinner unsichtbar machen
-	g_object_set(gui->spinner,"visible",FALSE,NULL);
-
 	//viewer "nullen"
 	gtk_tree_view_set_model (gui_get_gtk_tree_viewer(),NULL);
-
-	//Textfeld einen Buffer zuweisen
-	GtkEntryBuffer *buffer = NULL;
-	buffer = gtk_entry_buffer_new("1",-1);
-	gtk_entry_set_buffer (GTK_ENTRY(gui->texteingabe),buffer);
 
 
 	//Signale verbinden
@@ -78,28 +66,6 @@ void gui_init (void){
 	for (counter=0;counter<N_COLUMNS;counter++)
 	{
 
-		//Wenn Bild erreicht, dann mit dem pixbuf_renderer laden
-		if (counter==COLUMN_Bild)
-		{
-			renderer = gtk_cell_renderer_pixbuf_new();
-			spalte	 = gtk_tree_view_column_new_with_attributes (string_viewer_header[counter],renderer,
-																													"pixbuf", counter,NULL);
-			gtk_tree_view_column_set_resizable (spalte,TRUE);
-			gtk_tree_view_append_column (GTK_TREE_VIEW (gui->treeview), spalte);
-		}
-		//Wenn verkäuflich erreicht, dann mit checkbox laden
-		else if (counter==COLUMN_verkaeuflich)
-		{
-			renderer = gtk_cell_renderer_toggle_new ();
-			spalte	 = gtk_tree_view_column_new_with_attributes (string_viewer_header[counter],renderer,
-																													"active", counter,NULL);
-			gtk_tree_view_column_set_resizable (spalte,TRUE);
-			gtk_tree_view_append_column (GTK_TREE_VIEW (gui->treeview), spalte);
-		}
-
-		//alle anderen Daten als "text" laden
-		else
-		{
 			renderer = gtk_cell_renderer_text_new();
 			//eigenschaften des cell_renderers festlegen -> Textumbruch
 			g_object_set (renderer,"align-set",TRUE,"width-chars",11,"wrap-width",11,"wrap-mode",PANGO_WRAP_WORD,NULL);
@@ -108,7 +74,7 @@ void gui_init (void){
 
 			gtk_tree_view_column_set_resizable (spalte,TRUE);
 			gtk_tree_view_append_column (GTK_TREE_VIEW (gui->treeview), spalte);
-		}
+
 	}
   /* Enter the main loop */
   gtk_widget_show (gui->mainwindow);
@@ -124,25 +90,9 @@ GtkListStore *gui_model_fill_data (gint anzahl_zeilen){
 	//store erstellen um Daten für Tree-viewer zu speichern
 	store	= gtk_list_store_new (N_COLUMNS,					//anzahl an Spalten
 															G_TYPE_STRING,			//id
-															G_TYPE_STRING,			//Index
-															G_TYPE_STRING,			//Name
-															G_TYPE_STRING,			//Rasse
-															G_TYPE_STRING,			//Farbe
-															G_TYPE_STRING,			//Geschlecht
-															G_TYPE_STRING,			//Vater
-															G_TYPE_STRING,			//Mutter
-															G_TYPE_STRING,			//Stockmass
-															G_TYPE_STRING,			//Nachkommen
-															G_TYPE_STRING,			//Verwendung
-															G_TYPE_BOOLEAN,			//verkäuflich
-															G_TYPE_STRING,			//Herkunftsland
-															G_TYPE_STRING,			//Marke
-															GDK_TYPE_PIXBUF,		//Bild
-															G_TYPE_STRING);			//Geburtstag
+															G_TYPE_STRING);			//pfad
 
 
-	struct DB_STRUCT *db_data = NULL;
-	gint schleife=1;
 	/*
 			do{
 
@@ -260,6 +210,4 @@ GtkTreeView *gui_get_gtk_tree_viewer (void){
 	return (GtkTreeView*)gui_global.treeview;
 }
 
-GtkSpinner *gui_get_spinner (void){
-	return (GtkSpinner*)gui_global.spinner;
-}
+

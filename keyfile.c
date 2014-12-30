@@ -1,7 +1,7 @@
 /*
 Copyright (c) 2014 "Marcus Pries"
 
-This file is part of mysqlviewer.
+This file is part of odt2pdf-gtk.
 
 mysqlviewer is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ if (global_keyfile==NULL)
 
 //String aus Keyfile laden
 dir = g_key_file_get_string(	global_keyfile,
-															"Ornder",
+															"Ordner",
 															"Verzeichnis",
 															&error);
 //auf fehler prüfen

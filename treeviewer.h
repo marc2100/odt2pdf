@@ -28,31 +28,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 struct GUI_ELEMENTE{
 	GtkWidget *mainwindow;
 	GtkWidget *treeview;
-	GtkWidget *texteingabe;
-	GtkWidget *texteingabe_spalten_anzahl;
 	GtkWidget *button_refresh;
 	GtkWidget *button_exit;
 	GtkWidget *statusbar;
-	GtkWidget *spinner;
 };
 
 enum {
   COLUMN_ID,
-  COLUMN_INDEX,
-  COLUMN_Name,
-  COLUMN_Rasse,
-	COLUMN_Farbe,
-	COLUMN_Geschlecht,
-	COLUMN_Vater,
-	COLUMN_Mutter,
-	COLUMN_Stockmass,
-	COLUMN_Nachkommen,
-	COLUMN_Verwendung,
-	COLUMN_verkaeuflich,
-	COLUMN_Herkunftsland,
-	COLUMN_Marke,
-	COLUMN_Bild,
-	COLUMN_Geburtstag,
+  COLUMN_Pfad,
   N_COLUMNS
 };
 
@@ -74,7 +57,6 @@ GtkWidget *gui_get_button_refresh (void);
 //gibt den Viewer zurück
 GtkTreeView *gui_get_gtk_tree_viewer (void);
 
-GtkSpinner *gui_get_spinner (void);
 
 
 #endif // TREEVIEWER_H
