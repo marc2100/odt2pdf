@@ -53,7 +53,21 @@ void button_exit_clicked(GtkWidget *widget, gpointer data)
 }
 
 void button_work_clicked(GtkWidget *widget, gpointer data){
+	gchar *argv[] = {"unoconv","-f pdf *.odt"};
+	gchar *standard_output;
+	gchar *standard_error;
+	GError *error;
 	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe,NULL);
+	g_spawn_sync (NULL,
+								argv,
+								NULL,
+								G_SPAWN_SEARCH_PATH|G_SPAWN_SEARCH_PATH_FROM_ENVP,
+								NULL,
+								NULL,
+								*standard_output,
+								*standard_error,
+								NULL,
+								error);
 }
 
 //Ändert die Hintergrundfarbe der Buttons, wenn mit Maus darüber
