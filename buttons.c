@@ -45,7 +45,9 @@ gboolean thread_catcher_refresh (gpointer data);
 void button_refresh_clicked(GtkWidget *widget, gpointer data)
 {
 	GtkListStore *store = gui_model_fill_data ();
-	gtk_tree_view_set_model (gui_get_gtk_tree_viewer(),store);
+	gtk_tree_view_set_model (gui_get_gtk_tree_viewer(),(GtkTreeModel*)store);
+	//viewer "sortierbar" machen
+	gtk_tree_view_set_reorderable (gui_get_gtk_tree_viewer(),TRUE);
 }
 
 void button_exit_clicked(GtkWidget *widget, gpointer data)

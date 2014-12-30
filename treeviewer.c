@@ -22,9 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 struct GUI_ELEMENTE gui_global;
 //globaler Eintrag für Spaltennamen
 gchar * const string_viewer_header[] = {"ID","Pfad"};
+
 //lokale funtionen
 //füllt das Modell mit daten
 void fill_modell ();
+
 
 
 void gui_init (void){
@@ -48,12 +50,15 @@ void gui_init (void){
 
 	//viewer "nullen"
 	gtk_tree_view_set_model (gui_get_gtk_tree_viewer(),NULL);
-
+	//viewer "sortierbar" machen
+	gtk_tree_view_set_reorderable (gui_get_gtk_tree_viewer(),TRUE);
+	gtk_tree_view_set_headers_clickable (gui_get_gtk_tree_viewer(),TRUE);
 
 	//Signale verbinden
 	g_signal_connect(gui->mainwindow,"destroy",G_CALLBACK(gtk_main_quit), NULL);
 	g_signal_connect(gui->button_refresh,"clicked",G_CALLBACK(button_refresh_clicked), (gpointer*)gui);
 	g_signal_connect(gui->button_exit,"clicked",G_CALLBACK(button_exit_clicked), NULL);
+
 	//Buttons einfärben, wenn mit Maus darüber
 	g_signal_connect(gui->button_refresh,"enter",G_CALLBACK(buttons_entered), NULL);
 	g_signal_connect(gui->button_exit,"enter",G_CALLBACK(buttons_entered), NULL);
@@ -76,6 +81,10 @@ void gui_init (void){
 			gtk_tree_view_append_column (GTK_TREE_VIEW (gui->treeview), spalte);
 
 	}
+	//TreeViewer in Drag-and-Drop aufnehmen
+	gtk_tree_view_enable_model_drag_source(gui_get_gtk_tree_viewer(),
+																					0,NULL,0,0);
+
   /* Enter the main loop */
   gtk_widget_show (gui->mainwindow);
   gtk_main ();
