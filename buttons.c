@@ -44,8 +44,8 @@ gboolean thread_catcher_refresh (gpointer data);
 
 void button_refresh_clicked(GtkWidget *widget, gpointer data)
 {
-	ordner_auslesen();
-
+	GtkListStore *store = gui_model_fill_data ();
+	gtk_tree_view_set_model (gui_get_gtk_tree_viewer(),store);
 }
 
 void button_exit_clicked(GtkWidget *widget, gpointer data)

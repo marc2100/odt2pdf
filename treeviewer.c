@@ -82,124 +82,23 @@ void gui_init (void){
   return;
   }
 
-GtkListStore *gui_model_fill_data (gint anzahl_zeilen){
+GtkListStore *gui_model_fill_data (void){
 	//Variablen anlegen
 	GtkTreeIter iter;
 	gint counter=0;
 	GtkListStore *store = NULL;
 	//store erstellen um Daten für Tree-viewer zu speichern
 	store	= gtk_list_store_new (N_COLUMNS,					//anzahl an Spalten
-															G_TYPE_STRING,			//id
+															G_TYPE_INT,					//id
 															G_TYPE_STRING);			//pfad
+	ordner_auslesen(store);
 
 
-	/*
-			do{
-
-		//DB auslesen und Daten eintragen
-		db_data = read_row_mysql(schleife);
-		schleife++;
-		/* Append an empty row to the list store. Iter will point to the new row
-		gtk_list_store_append (store, &iter);
-
-		 füllt die hinzugefügte Reihe mit Daten
-		for (counter=0;counter<=(db_data->num_fields-1);counter++)
-		{
-
-			//Bild als Pixbuf speichern
-			if (counter==COLUMN_Bild)
-			{
-				gtk_list_store_set (store,&iter,counter,(GdkPixbuf*)g_ptr_array_index(db_data->ptr_array,counter),-1);
-			}
-			else if (counter==COLUMN_verkaeuflich)
-			{
-				//string in integer umwandeln
-				guint g=0;
-				g = (guint)g_ascii_strtod ((gchar*)g_ptr_array_index(db_data->ptr_array,counter),NULL);
-				//und in store speichern
-				gtk_list_store_set (store,&iter,counter,g,-1);
-				//abschließend den Speicher freigeben
-				g_free(g_ptr_array_index(db_data->ptr_array,counter));
-			}
-			//rest als "text" speichern
-			else
-			{
-				gtk_list_store_set (store,&iter,counter,(gchar*)g_ptr_array_index(db_data->ptr_array,counter),-1);
-				//string freigeben
-				g_free(g_ptr_array_index(db_data->ptr_array,counter));
-			}
-
-
-		}
-
-		//ptr-arry freigeben
-		g_ptr_array_free (db_data->ptr_array,TRUE);
-		//db_daten freigeben
-		g_free(db_data);
-
-		//runterzählen, bei 0 hört die Schleife auf
-		anzahl_zeilen--;
-	}while (anzahl_zeilen);
-	return store
-	*/
-	return NULL;
-}
-
-
-
-gboolean gui_modell_fill_row (GtkListStore *store,gint zeile){
-	/*
-	if (store==NULL||zeile==0) return FALSE;
-	//Variablen anlegen
-	struct DB_STRUCT *db_data = NULL;
-
-	//DB auslesen und Daten eintragen
-	db_data = read_row_mysql(zeile);
-	//prüfen on Eintrag vorhanden
-	//Falls ja Modell mit Daten füllen,
-	//und strcut db_daten freigeben
-	if (db_data!=NULL)
-	{
-		fill_modell (store,db_data);
-		g_ptr_array_free (db_data->ptr_array,TRUE);
-		g_free (db_data);
-		return TRUE;
-	}
-	*/
-	//ansonsten direkt zurückkehren
-	return FALSE;
-
-}
-
-
-void fill_modell (GtkListStore *store,struct DB_STRUCT *db_data){
-
-	return TRUE;
-}
-
-//erzeugt den store
-GtkListStore * gui_get_list_store(void){
-	GtkListStore *store = NULL;
-	//store erstellen um Daten für Tree-viewer zu speichern
-	store	= gtk_list_store_new (N_COLUMNS,					//anzahl an Spalten
-															G_TYPE_STRING,			//id
-															G_TYPE_STRING,			//Index
-															G_TYPE_STRING,			//Name
-															G_TYPE_STRING,			//Rasse
-															G_TYPE_STRING,			//Farbe
-															G_TYPE_STRING,			//Geschlecht
-															G_TYPE_STRING,			//Vater
-															G_TYPE_STRING,			//Mutter
-															G_TYPE_STRING,			//Stockmass
-															G_TYPE_STRING,			//Nachkommen
-															G_TYPE_STRING,			//Verwendung
-															G_TYPE_BOOLEAN,			//verkäuflich
-															G_TYPE_STRING,			//Herkunftsland
-															G_TYPE_STRING,			//Marke
-															GDK_TYPE_PIXBUF,		//Bild
-															G_TYPE_STRING);			//Geburtstag
 	return store;
 }
+
+
+
 
 //gibt den Refresh_button zurück
 GtkWidget *gui_get_button_refresh (void){

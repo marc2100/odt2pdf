@@ -22,19 +22,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ///sortiert alle Einträge aus, bis auf *.odf-dateien
 gchar* dateifilter (gchar const *pfad);
 ///gibt die Einträge aus
-void ausgabe (gchar const *pfad);
+void ausgabe (gint *id,gchar const *pfad,GtkListStore *list_store);
 
 ///ließt die Einträge aus dem in der Keyfile
 ///angegebenen Ordner aus
-void ordner_auslesen (void){
+void ordner_auslesen (GtkListStore* store){
 	GDir 		*ordner = NULL;
 	GError 	*error = NULL;
 	gchar 	*ordner_eintrag = NULL;
-	gchar *dir_path = keyfile_get_searchdir();
+	gchar 	*ordner_pfad = keyfile_get_searchdir();
+	gint id_counter = 0;
 
 	//Ordner öffnen
-	ordner = g_dir_open(dir_path,0,error);
-	g_free(dir_path);
+	ordner = g_dir_open(ordner_pfad,0,&error);
+	g_free(ordner_pfad);
 	//auf Fehler prüfen
 	if (error!=NULL){
 		g_error("%s",error->message);
@@ -42,14 +43,16 @@ void ordner_auslesen (void){
 		error = NULL;
 	}
 	//ersten Eintrag lesen
-	ordner_eintrag = g_dir_read_name(ordner);
+	ordner_eintrag = (gchar*)g_dir_read_name(ordner);
 	do{
+
 	//Einträge filtern
 	ordner_eintrag = dateifilter (ordner_eintrag);
 	//Einträge ausgeben
-	ausgabe(ordner_eintrag);
+	ausgabe(&id_counter,ordner_eintrag,store);
 	//Schleife solange wiederholen, bis keine Einträge mehr vorhanden (=NULL)
-	}while (ordner_eintrag = g_dir_read_name(ordner));
+	ordner_eintrag = (gchar*)g_dir_read_name(ordner);
+	}while (ordner_eintrag);
 	//Ordner wieder schließen
 	g_dir_close(ordner);
 	return;
@@ -60,15 +63,26 @@ void ordner_auslesen (void){
 gchar* dateifilter (gchar const *pfad)
 {
 	if (g_str_has_suffix(pfad,".odt"))
-		return pfad;
+		return (gchar*)pfad;
 	else
 		return NULL;
 }
 
 ///gibt die Einträge aus
-void ausgabe (gchar const *pfad){
-	if (!pfad)
+void ausgabe (gint *id,gchar const *pfad,GtkListStore *list_store){
+	GtkTreeIter iter;
+	//Wenn pfad = NULL dann verwerfen
+	if (!pfad){
 		return;
-	else
-		g_print("%s/%s\n",keyfile_get_searchdir(),pfad);
+	//ansonsten Daten speichern
+	}else{
+		*id+=1;
+		gtk_list_store_append (list_store, &iter);
+		gtk_list_store_set (list_store, &iter,
+												COLUMN_ID, *id,
+												COLUMN_Pfad, pfad,
+												-1);
+		g_print("%04d,%s/%s\n",*id,keyfile_get_searchdir(),pfad);
+	}
+
 }

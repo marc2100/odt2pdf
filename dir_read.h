@@ -26,6 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ///ließt die Einträge aus dem in der Keyfile
 ///angegebenen Ordner aus
-void ordner_auslesen (void);
+void ordner_auslesen (GtkListStore* store);
 
 #endif // DIR_READ_H

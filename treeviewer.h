@@ -43,16 +43,7 @@ enum {
 
 void gui_init (void);
 
-GtkListStore *gui_model_fill_data (gint anzahl_zeilen);
-
-gboolean gui_modell_fill_row (GtkListStore *store,gint zeile);
-
-GtkProgressBar *gui_get_progressbar (void);
-
-void gui_pulse_progressbar (void);
-
-//erzeugt den store
-GtkListStore * gui_get_list_store(void);
+GtkListStore *gui_model_fill_data (void);
 
 //gibt den Refresh_button zurück
 GtkWidget *gui_get_button_refresh (void);
