@@ -44,7 +44,7 @@ void ordner_auslesen (GtkListStore* store){
 	}
 	//ersten Eintrag lesen
 	ordner_eintrag = (gchar*)g_dir_read_name(ordner);
-	do{
+	while (ordner_eintrag){
 
 	//Einträge filtern
 	ordner_eintrag = dateifilter (ordner_eintrag);
@@ -52,7 +52,7 @@ void ordner_auslesen (GtkListStore* store){
 	ausgabe(&id_counter,ordner_eintrag,store);
 	//Schleife solange wiederholen, bis keine Einträge mehr vorhanden (=NULL)
 	ordner_eintrag = (gchar*)g_dir_read_name(ordner);
-	}while (ordner_eintrag);
+	}
 	//Ordner wieder schließen
 	g_dir_close(ordner);
 	return;
@@ -82,7 +82,6 @@ void ausgabe (gint *id,gchar const *pfad,GtkListStore *list_store){
 												COLUMN_ID, *id,
 												COLUMN_Pfad, pfad,
 												-1);
-		g_print("%04d,%s/%s\n",*id,keyfile_get_searchdir(),pfad);
 	}
 
 }

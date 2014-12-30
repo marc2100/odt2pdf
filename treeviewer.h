@@ -32,6 +32,7 @@ struct GUI_ELEMENTE{
 	GtkWidget *treeview;
 	GtkWidget *button_refresh;
 	GtkWidget *button_exit;
+	GtkWidget *button_work;
 	GtkWidget *statusbar;
 };
 
@@ -49,7 +50,8 @@ GtkListStore *gui_model_fill_data (void);
 GtkWidget *gui_get_button_refresh (void);
 //gibt den Viewer zurück
 GtkTreeView *gui_get_gtk_tree_viewer (void);
-
+//wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen
+gboolean treemodel_ausgabe (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data);
 
 
 #endif // TREEVIEWER_H

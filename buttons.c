@@ -36,11 +36,7 @@ struct REFRESH *refresh;
 
 //lokale Variablen
 
-
 //lokale funktionen
-gpointer *thread_refresh_button (gpointer data);
-gboolean thread_catcher_refresh (gpointer data);
-
 
 void button_refresh_clicked(GtkWidget *widget, gpointer data)
 {
@@ -48,14 +44,17 @@ void button_refresh_clicked(GtkWidget *widget, gpointer data)
 	gtk_tree_view_set_model (gui_get_gtk_tree_viewer(),(GtkTreeModel*)store);
 	//viewer "sortierbar" machen
 	gtk_tree_view_set_reorderable (gui_get_gtk_tree_viewer(),TRUE);
+
 }
 
 void button_exit_clicked(GtkWidget *widget, gpointer data)
 {
-  gtk_main_quit();
+	gtk_main_quit();
 }
 
-
+void button_work_clicked(GtkWidget *widget, gpointer data){
+	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe,NULL);
+}
 
 //Ändert die Hintergrundfarbe der Buttons, wenn mit Maus darüber
 void buttons_entered (GtkWidget *widget, gpointer data){

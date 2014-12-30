@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //globale Variablen
 struct GUI_ELEMENTE gui_global;
 //globaler Eintrag für Spaltennamen
-gchar * const string_viewer_header[] = {"ID","Pfad"};
+gchar * const string_viewer_header[] = {"ID","Datei"};
 
 //lokale funtionen
 //füllt das Modell mit daten
@@ -41,6 +41,7 @@ void gui_init (void){
 	gui->button_refresh	= GTK_WIDGET (gtk_builder_get_object(builder,"button_refresh"));
 	gui->button_exit		= GTK_WIDGET (gtk_builder_get_object(builder,"button_exit"));
 	gui->statusbar			= GTK_WIDGET (gtk_builder_get_object(builder,"statusbar1"));
+  gui->button_work		= GTK_WIDGET (gtk_builder_get_object(builder,"button_work"));
 
 	//Eigenschaften des Main-Window setzen
 	gtk_window_set_title(GTK_WINDOW(gui->mainwindow), "odt2pft-gtkr");
@@ -56,8 +57,9 @@ void gui_init (void){
 
 	//Signale verbinden
 	g_signal_connect(gui->mainwindow,"destroy",G_CALLBACK(gtk_main_quit), NULL);
-	g_signal_connect(gui->button_refresh,"clicked",G_CALLBACK(button_refresh_clicked), (gpointer*)gui);
+	g_signal_connect(gui->button_refresh,"clicked",G_CALLBACK(button_refresh_clicked), NULL);
 	g_signal_connect(gui->button_exit,"clicked",G_CALLBACK(button_exit_clicked), NULL);
+	g_signal_connect(gui->button_work,"clicked",G_CALLBACK(button_work_clicked), NULL);
 
 	//Buttons einfärben, wenn mit Maus darüber
 	g_signal_connect(gui->button_refresh,"enter",G_CALLBACK(buttons_entered), NULL);
@@ -70,13 +72,11 @@ void gui_init (void){
 	gint counter;
 	for (counter=0;counter<N_COLUMNS;counter++)
 	{
-
 			renderer = gtk_cell_renderer_text_new();
 			//eigenschaften des cell_renderers festlegen -> Textumbruch
 			g_object_set (renderer,"align-set",TRUE,"width-chars",11,"wrap-width",11,"wrap-mode",PANGO_WRAP_WORD,NULL);
 			spalte	 = gtk_tree_view_column_new_with_attributes (string_viewer_header[counter],renderer,
 																													"text", counter,NULL);
-
 			gtk_tree_view_column_set_resizable (spalte,TRUE);
 			gtk_tree_view_append_column (GTK_TREE_VIEW (gui->treeview), spalte);
 
@@ -98,8 +98,8 @@ GtkListStore *gui_model_fill_data (void){
 	GtkListStore *store = NULL;
 	//store erstellen um Daten für Tree-viewer zu speichern
 	store	= gtk_list_store_new (N_COLUMNS,					//anzahl an Spalten
-															G_TYPE_INT,					//id
-															G_TYPE_STRING);			//pfad
+															G_TYPE_INT,			//Datei
+															G_TYPE_STRING);			//Pfad
 	ordner_auslesen(store);
 
 
@@ -118,4 +118,12 @@ GtkTreeView *gui_get_gtk_tree_viewer (void){
 	return (GtkTreeView*)gui_global.treeview;
 }
 
+//wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen
+gboolean treemodel_ausgabe (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data){
+	gint id_data;
+	gchar *text_data;
+	gtk_tree_model_get(model,iter,COLUMN_Pfad,&text_data,-1);
+	g_print("%s\n",text_data);
 
+	return FALSE;
+}
