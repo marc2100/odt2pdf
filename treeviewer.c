@@ -90,8 +90,6 @@ void gui_init (void){
 
 GtkListStore *gui_model_fill_data (void){
 	//Variablen anlegen
-	GtkTreeIter iter;
-	gint counter=0;
 	GtkListStore *store = NULL;
 	//store erstellen um Daten für Tree-viewer zu speichern
 	store	= gtk_list_store_new (N_COLUMNS,					//anzahl an Spalten
