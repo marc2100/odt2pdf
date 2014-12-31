@@ -53,20 +53,26 @@ void button_exit_clicked(GtkWidget *widget, gpointer data)
 }
 
 void button_work_clicked(GtkWidget *widget, gpointer data){
-	gchar *cmd = {"unoconv -f pdf -o /home/marc2100/temp/odt2pdf/test_dir /home/marc2100/temp/odt2pdf/*.odt"};
+	GString *command = g_string_new("unoconv -f pdf -o /home/marc2100/temp/odt2pdf/test_dir ");
 	gchar *standard_output=NULL;
 	gchar *standard_error=NULL;
 	GError *error=NULL;
 
-	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe,NULL);
-	if (!g_spawn_command_line_sync(cmd,&standard_output,&standard_error,NULL,&error) ){
-			g_warning("%s",error->message);
-			g_error_free(error);
-			error = NULL;
+	//wird für jedes Elemt in der Liststore ausgeführt
+	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe,(gpointer)command);
+	//startet den Converter und wartet bis er fertig ist
+	g_print("%s\n",command->str);
+	if (!g_spawn_command_line_sync(command->str,&standard_output,&standard_error,NULL,&error) ){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
 	}else{
-	g_print("Output: %s\n",standard_output);
-	g_print(" Error: %s\n",standard_error);
+		g_print("------------------------------------------ \n");
+		g_print("Output: %s\n",standard_output);
+		g_print("Error : %s\n",standard_error);
+		g_print("------------------------------------------ \n");
 	}
+	g_string_free(command,TRUE);
 }
 
 //Ändert die Hintergrundfarbe der Buttons, wenn mit Maus darüber

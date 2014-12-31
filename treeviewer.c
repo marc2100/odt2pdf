@@ -24,9 +24,6 @@ struct GUI_ELEMENTE gui_global;
 gchar * const string_viewer_header[] = {"ID","Datei"};
 
 //lokale funtionen
-//füllt das Modell mit daten
-void fill_modell ();
-
 
 
 void gui_init (void){
@@ -122,8 +119,15 @@ GtkTreeView *gui_get_gtk_tree_viewer (void){
 gboolean treemodel_ausgabe (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data){
 	gint id_data;
 	gchar *text_data;
+	//Dateiname aus Liststore auslesen
 	gtk_tree_model_get(model,iter,COLUMN_Pfad,&text_data,-1);
-	g_print("%s\n",text_data);
+	//Datei mit absolutem Pfad an den command anhängen
+	data = (gpointer)g_string_append ((GString*)data,keyfile_get_searchdir());
+	data = (gpointer)g_string_append ((GString*)data,"/");
+	data = (gpointer)g_string_append ((GString*)data,text_data);
+	data = (gpointer)g_string_append ((GString*)data," ");
+
+	//g_print("%s/%s\n",keyfile_get_searchdir(),text_data);
 
 	return FALSE;
 }
