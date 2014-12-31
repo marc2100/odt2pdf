@@ -50,8 +50,9 @@ GtkListStore *gui_model_fill_data (void);
 GtkWidget *gui_get_button_refresh (void);
 //gibt den Viewer zurück
 GtkTreeView *gui_get_gtk_tree_viewer (void);
-//wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen
-gboolean treemodel_ausgabe (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data);
-
+//wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen, um den cmd für unoconv zu bauen
+gboolean treemodel_ausgabe_unoconv (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data);
+//wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen, um den cmd für pdftk zu bauen
+gboolean treemodel_ausgabe_pdftk (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data);
 
 #endif // TREEVIEWER_H

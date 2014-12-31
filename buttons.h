@@ -26,6 +26,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "dir_read.h"
 #include "keyfile.h"
 
+struct PDFTK_DATA{
+	GString *pdftk_cmd;
+	gchar *tmp;
+};
+
 //G_CALLBACK-Funktionen
 void button_refresh_clicked(GtkWidget *widget, gpointer data);
 void buttons_entered (GtkWidget *widget, gpointer data);

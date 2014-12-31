@@ -21,7 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 GKeyFile *global_keyfile = NULL;
 
 
-
 //läd die Keyfile *filename oder bie NULL die default keyfile_file
 //@return true bei erfolg, bei fehlern false
 gboolean keyfile_init (const gchar *filename){

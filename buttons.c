@@ -18,25 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "buttons.h"
-//lokale struct
-struct REFRESH{
-struct GUI_ELEMENTE *gui;
-gint eingabe;
-gint anzahl_zeilen;
-GtkListStore *store;
-GAsyncQueue *queue;
 
-};
 
-struct CATCHER{
-GThread *thread_id;
-GAsyncQueue *queue;
-struct REFRESH *refresh;
-};
 
-//lokale Variablen
-
-//lokale funktionen
 
 void button_refresh_clicked(GtkWidget *widget, gpointer data)
 {
@@ -54,7 +38,8 @@ void button_exit_clicked(GtkWidget *widget, gpointer data)
 
 void button_work_clicked(GtkWidget *widget, gpointer data){
 	GString *unoconv_cmd 	= g_string_new("unoconv -f pdf -o ");
-	GString *pdftk_cmd 		= g_string_new("pdftk output ");
+	struct PDFTK_DATA pdftk;
+
 	gchar *standard_output=NULL;
 	gchar *standard_error=NULL;
 	GError *error=NULL;
@@ -70,7 +55,7 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	g_string_append(unoconv_cmd,tmp);
 	g_string_append(unoconv_cmd," ");
 	//wird für jedes Elemt in der Liststore ausgeführt
-	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe,(gpointer)unoconv_cmd);
+	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_unoconv,(gpointer)unoconv_cmd);
 
 	//startet den Converter und wartet bis er fertig ist
 	g_print("%s\n",unoconv_cmd->str);
@@ -86,9 +71,24 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 		g_print("------------------------------------------ \n");
 	}
 
+	//pdftk aufruf bauen
+	pdftk.pdftk_cmd = g_string_new("pdftk output ");
+	g_string_append(pdftk.pdftk_cmd,keyfile_get_outputdir());
+	g_string_append(pdftk.pdftk_cmd,"/");
+	g_string_append(pdftk.pdftk_cmd,keyfile_get_pdf_name());
+	g_string_append(pdftk.pdftk_cmd," ");
+	//Tmp-Verzeichnis in struct kopieren, wird für den cmd-bau gebraucht
+	pdftk.tmp = g_strdup(tmp);
+	//den ListStore durchlaufen lassen, und pfad bauen
+	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_pdftk,(gpointer)&pdftk);
+
+	g_print("%s\n",pdftk.pdftk_cmd->str);
+	//Verzeichnis löschen
+	g_rmdir (tmp);
 	//strings freigeben
 	g_free(tmp);
 	g_string_free(unoconv_cmd,TRUE);
+
 }
 
 //Ändert die Hintergrundfarbe der Buttons, wenn mit Maus darüber
