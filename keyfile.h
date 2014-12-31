@@ -36,6 +36,10 @@ gboolean keyfile_init (const gchar *filename);
 ///@return gchar *dir
 gchar *keyfile_get_searchdir (void);
 
+///gibt einen String mit dem Verzeichnis zurück, in das das Ergebnis soll
+///@warning muss mit g_free freigegeben werden
+///@return gchar *dir
+gchar *keyfile_get_outputdir (void);
 
 
 #endif // KEYFILE_H

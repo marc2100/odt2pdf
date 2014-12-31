@@ -69,7 +69,6 @@ gboolean keyfile_init (const gchar *filename){
 ///gibt einen String mit dem Verzeichnis zurück, dass eingelesen werden soll
 ///@warning muss mit g_free freigegeben werden
 ///@return gchar *dir
-
 gchar *keyfile_get_searchdir (void)
 {
 GError *error = NULL;
@@ -102,3 +101,37 @@ if (error!=NULL||dir==NULL)
 return dir;
 }
 
+
+///gibt einen String mit dem Verzeichnis zurück, in das das Ergebnis soll
+///@warning muss mit g_free freigegeben werden
+///@return gchar *dir
+gchar *keyfile_get_outputdir (void){
+GError *error = NULL;
+gchar *dir = NULL;
+
+//checken ob Keyfile eingelesen wurde
+if (global_keyfile==NULL)
+{
+	g_warning ("Noch kein \"keyfile_init()\" aufgerufen\n");
+	if (!keyfile_init (NULL))
+	{
+		g_error ("Konnte Keyfile nicht laden, bitte erst keyfile_init() aufrufen!");
+	}
+}
+
+
+//String aus Keyfile laden
+dir = g_key_file_get_string(global_keyfile,
+														"Ordner",
+														"Output",
+														&error);
+//auf fehler prüfen
+if (error!=NULL||dir==NULL)
+{
+	g_error("%s",error->message);
+	g_error_free(error);
+	error = NULL;
+}
+
+return dir;
+}
