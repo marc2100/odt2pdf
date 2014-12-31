@@ -72,21 +72,37 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	}
 
 	//pdftk aufruf bauen
-	pdftk.pdftk_cmd = g_string_new("pdftk output ");
-	g_string_append(pdftk.pdftk_cmd,keyfile_get_outputdir());
-	g_string_append(pdftk.pdftk_cmd,"/");
-	g_string_append(pdftk.pdftk_cmd,keyfile_get_pdf_name());
+	pdftk.pdftk_cmd = g_string_new("pdftk");
+
+
 	g_string_append(pdftk.pdftk_cmd," ");
 	//Tmp-Verzeichnis in struct kopieren, wird für den cmd-bau gebraucht
 	pdftk.tmp = g_strdup(tmp);
 	//den ListStore durchlaufen lassen, und pfad bauen
 	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_pdftk,(gpointer)&pdftk);
+	g_string_append(pdftk.pdftk_cmd," output ");
+	g_string_append(pdftk.pdftk_cmd,keyfile_get_outputdir());
+	g_string_append(pdftk.pdftk_cmd,"/");
+	g_string_append(pdftk.pdftk_cmd,keyfile_get_pdf_name());
 
-	g_print("%s\n",pdftk.pdftk_cmd->str);
+	if(!g_spawn_command_line_sync(pdftk.pdftk_cmd->str,&standard_output,&standard_error,NULL,&error) ){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}else{
+		g_print("------------------------------------------ \n");
+		g_print("Output: %s\n",standard_output);
+		g_print("Error : %s\n",standard_error);
+		g_print("------------------------------------------ \n");
+	}
+
+
 	//Verzeichnis löschen
 	g_rmdir (tmp);
 	//strings freigeben
 	g_free(tmp);
+	g_free(pdftk.tmp);
+	g_string_free(pdftk.pdftk_cmd,TRUE);
 	g_string_free(unoconv_cmd,TRUE);
 
 }
