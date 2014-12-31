@@ -53,7 +53,8 @@ void button_exit_clicked(GtkWidget *widget, gpointer data)
 }
 
 void button_work_clicked(GtkWidget *widget, gpointer data){
-	GString *unoconv_cmd = g_string_new("unoconv -f pdf -o ");
+	GString *unoconv_cmd 	= g_string_new("unoconv -f pdf -o ");
+	GString *pdftk_cmd 		= g_string_new("pdftk output ");
 	gchar *standard_output=NULL;
 	gchar *standard_error=NULL;
 	GError *error=NULL;
@@ -85,13 +86,9 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 		g_print("------------------------------------------ \n");
 	}
 
-	//string freigeben
+	//strings freigeben
+	g_free(tmp);
 	g_string_free(unoconv_cmd,TRUE);
-	//tmp-Verzeichnis wieder löschen
-	GString *tmp_rm = g_string_new(tmp);
-	g_string_append(tmp_rm,"/");
-	g_print("%s\n",tmp_rm->str);
-	g_remove (tmp_rm->str);
 }
 
 //Ändert die Hintergrundfarbe der Buttons, wenn mit Maus darüber

@@ -135,3 +135,38 @@ if (error!=NULL||dir==NULL)
 
 return dir;
 }
+
+///gibt einen String mit dem Dateinamen zurück, wie die PDF-Datei heißen soll
+///@warning muss mit g_free freigegeben werden
+///@return gchar *filename
+gchar *keyfile_get_pdf_name (void)
+{
+	GError *error = NULL;
+	gchar *pdfname = NULL;
+
+	//checken ob Keyfile eingelesen wurde
+	if (global_keyfile==NULL)
+	{
+		g_warning ("Noch kein \"keyfile_init()\" aufgerufen\n");
+		if (!keyfile_init (NULL))
+		{
+			g_error ("Konnte Keyfile nicht laden, bitte erst keyfile_init() aufrufen!");
+		}
+	}
+
+
+	//String aus Keyfile laden
+	pdfname = g_key_file_get_string(global_keyfile,
+															"Datei",
+															"pdfname",
+															&error);
+	//auf fehler prüfen
+	if (error!=NULL||pdfname==NULL)
+	{
+		g_error("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+
+	return pdfname;
+}

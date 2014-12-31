@@ -41,5 +41,9 @@ gchar *keyfile_get_searchdir (void);
 ///@return gchar *dir
 gchar *keyfile_get_outputdir (void);
 
+///gibt einen String mit dem Dateinamen zurück, wie die PDF-Datei heißen soll
+///@warning muss mit g_free freigegeben werden
+///@return gchar *filename
+gchar *keyfile_get_pdf_name (void);
 
 #endif // KEYFILE_H
