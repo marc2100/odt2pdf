@@ -53,7 +53,7 @@ void button_exit_clicked(GtkWidget *widget, gpointer data)
 }
 
 void button_work_clicked(GtkWidget *widget, gpointer data){
-	GString *unoconv_cmd = g_string_new("unoconv -f pdf -o /home/marc2100/temp/odt2pdf/test_dir ");
+	GString *unoconv_cmd = g_string_new("unoconv -f pdf -o ");
 	gchar *standard_output=NULL;
 	gchar *standard_error=NULL;
 	GError *error=NULL;
@@ -65,10 +65,15 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 		error = NULL;
 	}
 	printf("Das erstellte Verzeichniss ist: %s\n",tmp);
+	//Pfad für unoconv erstellen...
+	g_string_append(unoconv_cmd,tmp);
+	g_string_append(unoconv_cmd," ");
 	//wird für jedes Elemt in der Liststore ausgeführt
 	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe,(gpointer)unoconv_cmd);
+
 	//startet den Converter und wartet bis er fertig ist
 	g_print("%s\n",unoconv_cmd->str);
+
 	if (!g_spawn_command_line_sync(unoconv_cmd->str,&standard_output,&standard_error,NULL,&error) ){
 		g_warning("%s",error->message);
 		g_error_free(error);
@@ -79,10 +84,14 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 		g_print("Error : %s\n",standard_error);
 		g_print("------------------------------------------ \n");
 	}
+
 	//string freigeben
 	g_string_free(unoconv_cmd,TRUE);
 	//tmp-Verzeichnis wieder löschen
-	g_rmdir (tmp);
+	GString *tmp_rm = g_string_new(tmp);
+	g_string_append(tmp_rm,"/");
+	g_print("%s\n",tmp_rm->str);
+	g_remove (tmp_rm->str);
 }
 
 //Ändert die Hintergrundfarbe der Buttons, wenn mit Maus darüber
