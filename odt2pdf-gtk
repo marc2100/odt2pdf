@@ -1,8 +1,0 @@
- 
-
-[Ordner]
-Verzeichnis = /home/marc2100/temp/odt2pdf
-Output = /home/marc2100/temp/odt2pdf/test_dir
-
-[Datei]
-pdfname = gesamt.pdf
