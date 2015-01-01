@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <gtk/gtk.h>
 #include "treeviewer.h"
 
-#define keyfile_file "odt2pdf-gtk"
+#define keyfile_file "odt2pdf-gtk.conf"
 
 ///läd die Keyfile *filename oder bie NULL die default keyfile_file
 ///@return true bei erfolg, bei fehlern false
