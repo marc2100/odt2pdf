@@ -37,12 +37,14 @@ void button_exit_clicked(GtkWidget *widget, gpointer data)
 }
 
 void button_work_clicked(GtkWidget *widget, gpointer data){
-	GString *unoconv_cmd 	= g_string_new("unoconv -f pdf -o ");
+	//GString *unoconv_cmd 	= g_string_new("unoconv -f pdf -o ");
 	struct PDFTK_DATA pdftk;
 
-	gchar *standard_output=NULL;
-	gchar *standard_error=NULL;
+	gint unoconv_output=0, unoconv_error=0;
+	GPid unoconv_pid=0;
 	GError *error=NULL;
+	GPtrArray *unoconv_argv=NULL;
+
 	//tmp-Ordner anlegen
 	gchar *tmp = g_dir_make_tmp("odt2pdf-gtk_XXXXXX",&error);
 	if (error!=NULL){
@@ -52,25 +54,39 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	}
 	printf("Das erstellte Verzeichniss ist: %s\n",tmp);
 	//Pfad für unoconv erstellen...
-	g_string_append(unoconv_cmd,tmp);
-	g_string_append(unoconv_cmd," ");
+	unoconv_argv = g_ptr_array_new ();
+	g_ptr_array_add(unoconv_argv,(gpointer)"unoconv");
+	g_ptr_array_add(unoconv_argv,(gpointer)"-f");
+	g_ptr_array_add(unoconv_argv,(gpointer)"pdf");
+	g_ptr_array_add(unoconv_argv,(gpointer)"-o");
+	g_ptr_array_add(unoconv_argv,(gpointer)g_strdup(tmp));
+	//g_string_append(unoconv_cmd,tmp);
+	//g_string_append(unoconv_cmd," ");
 	//wird für jedes Elemt in der Liststore ausgeführt
-	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_unoconv,(gpointer)unoconv_cmd);
-
+	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_unoconv,(gpointer)unoconv_argv);
+	//abschließende NULL anhängen
+	g_ptr_array_add(unoconv_argv,(gpointer)NULL);
 	//startet den Converter und wartet bis er fertig ist
-	g_print("%s\n",unoconv_cmd->str);
-
-	if (!g_spawn_command_line_sync(unoconv_cmd->str,&standard_output,&standard_error,NULL,&error) ){
+	//g_print("%s\n",unoconv_cmd->str);
+	gboolean status = FALSE;
+	status =	g_spawn_async_with_pipes (NULL,
+																			(gchar**)unoconv_argv->pdata,
+																			NULL,
+																			G_SPAWN_SEARCH_PATH,
+																			NULL,
+																			NULL,
+																			&unoconv_pid,
+																			NULL,
+																			&unoconv_output,
+																			&unoconv_error,
+																			&error);
+	if (error!=NULL){
 		g_warning("%s",error->message);
 		g_error_free(error);
 		error = NULL;
 	}else{
-		g_print("------------------------------------------ \n");
-		g_print("Output: %s\n",standard_output);
-		g_print("Error : %s\n",standard_error);
-		g_print("------------------------------------------ \n");
+		g_print("Unoconv gestartet mit PID:%d\n",unoconv_pid);
 	}
-
 	//pdftk aufruf bauen
 	pdftk.pdftk_cmd = g_string_new("pdftk");
 
@@ -84,7 +100,7 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	g_string_append(pdftk.pdftk_cmd,keyfile_get_outputdir());
 	g_string_append(pdftk.pdftk_cmd,"/");
 	g_string_append(pdftk.pdftk_cmd,keyfile_get_pdf_name());
-
+	/*
 	if(!g_spawn_command_line_sync(pdftk.pdftk_cmd->str,&standard_output,&standard_error,NULL,&error) ){
 		g_warning("%s",error->message);
 		g_error_free(error);
@@ -95,15 +111,16 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 		g_print("Error : %s\n",standard_error);
 		g_print("------------------------------------------ \n");
 	}
-
+	*/
 
 	//Verzeichnis löschen
 	g_rmdir (tmp);
 	//strings freigeben
+	g_ptr_array_free (unoconv_argv,TRUE);
 	g_free(tmp);
 	g_free(pdftk.tmp);
 	g_string_free(pdftk.pdftk_cmd,TRUE);
-	g_string_free(unoconv_cmd,TRUE);
+	//g_string_free(unoconv_cmd,TRUE);
 
 }
 

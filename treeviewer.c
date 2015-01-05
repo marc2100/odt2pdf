@@ -118,16 +118,22 @@ GtkTreeView *gui_get_gtk_tree_viewer (void){
 
 //wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen
 gboolean treemodel_ausgabe_unoconv (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data){
-	gint id_data;
+	GPtrArray *ptr_array = (GPtrArray *)data;
 	gchar *text_data;
+	GString *pfad = g_string_new(NULL);
 	//Dateiname aus Liststore auslesen
 	gtk_tree_model_get(model,iter,COLUMN_Pfad,&text_data,-1);
-	//Datei mit absolutem Pfad an den command anhängen
-	data = (gpointer)g_string_append ((GString*)data,keyfile_get_searchdir());
-	data = (gpointer)g_string_append ((GString*)data,"/");
-	data = (gpointer)g_string_append ((GString*)data,text_data);
-	data = (gpointer)g_string_append ((GString*)data," ");
 
+	//Datei mit absolutem Pfad an ptr_arry hängen
+	data = (gpointer)g_string_append ((GString*)pfad,keyfile_get_searchdir());
+	data = (gpointer)g_string_append ((GString*)pfad,"/");
+	data = (gpointer)g_string_append ((GString*)pfad,text_data);
+
+	//Pfad als String ins array schreiben
+	g_ptr_array_add(ptr_array,(gpointer)g_strdup(pfad->str));
+
+	//string freigeben
+	g_string_free(pfad,TRUE);
 	return FALSE;
 }
 
