@@ -37,7 +37,6 @@ void button_exit_clicked(GtkWidget *widget, gpointer data)
 }
 
 void button_work_clicked(GtkWidget *widget, gpointer data){
-	struct PDFTK_DATA pdftk;
 	struct UNOCONV_DATA *unoconv = g_malloc(sizeof(struct UNOCONV_DATA));
 
 	gint unoconv_output=0, unoconv_error=0;
@@ -51,6 +50,8 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 		g_error_free(error);
 		error = NULL;
 	}
+
+
 	printf("Das erstellte Verzeichniss ist: %s\n",tmp);
 	//Pfad für unoconv erstellen...
 	unoconv_argv = g_ptr_array_new ();
@@ -89,46 +90,22 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	unoconv->unoconv_output = g_io_channel_unix_new(unoconv_output);
 	unoconv->unoconv_error 	= g_io_channel_unix_new(unoconv_error);
 
+	//den Pfad für PDFTK speichern, um ihn später im Childwatch aufzurufen
+	unoconv->tmp_dir = g_strdup(tmp);
+
 	//g_child_watch einrichten, um über Programmende informiert zu werden
 	g_child_watch_add(unoconv->unoconv_pid,
 										unoconv_child_watch_func,
 										(gpointer)unoconv);
 
 
-	//pdftk aufruf bauen
-	pdftk.pdftk_cmd = g_string_new("pdftk");
 
-
-	g_string_append(pdftk.pdftk_cmd," ");
-	//Tmp-Verzeichnis in struct kopieren, wird für den cmd-bau gebraucht
-	pdftk.tmp = g_strdup(tmp);
-	//den ListStore durchlaufen lassen, und pfad bauen
-	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_pdftk,(gpointer)&pdftk);
-	g_string_append(pdftk.pdftk_cmd," output ");
-	g_string_append(pdftk.pdftk_cmd,keyfile_get_outputdir());
-	g_string_append(pdftk.pdftk_cmd,"/");
-	g_string_append(pdftk.pdftk_cmd,keyfile_get_pdf_name());
-	/*
-	if(!g_spawn_command_line_sync(pdftk.pdftk_cmd->str,&standard_output,&standard_error,NULL,&error) ){
-		g_warning("%s",error->message);
-		g_error_free(error);
-		error = NULL;
-	}else{
-		g_print("------------------------------------------ \n");
-		g_print("Output: %s\n",standard_output);
-		g_print("Error : %s\n",standard_error);
-		g_print("------------------------------------------ \n");
-	}
-	*/
 
 	//Verzeichnis löschen
 	//g_rmdir (tmp);
 	//strings freigeben
 	g_ptr_array_free (unoconv_argv,TRUE);
 	g_free(tmp);
-	g_free(pdftk.tmp);
-	g_string_free(pdftk.pdftk_cmd,TRUE);
-	//g_string_free(unoconv_cmd,TRUE);
 
 }
 
@@ -143,12 +120,12 @@ void buttons_entered (GtkWidget *widget, gpointer data){
 
 }
 
-//unoconv_pid_watch
+//unoconv_pid_watch wird aufgerufen sobald der unoconv-Prozess beendet ist
 void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 	struct UNOCONV_DATA *unoconv = (struct UNOCONV_DATA*) user_data;
 	GError *error = NULL;
 
-		GString *out = g_string_new(NULL);
+	GString *out = g_string_new(NULL);
 	GString *err = g_string_new(NULL);
 
 	g_io_channel_read_line_string (unoconv->unoconv_output,out,NULL,&error);
@@ -164,8 +141,6 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 		error = NULL;
 	}
 
-
-
 	//Status abfragen
 	g_spawn_check_exit_status (status,&error);
 	if (error!=NULL){
@@ -179,5 +154,25 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 	}
 	//Pid schließen (ist unter UNIX nicht nötig)
 	g_spawn_close_pid(unoconv->unoconv_pid);
+
+	//pdftk aufruf bauen
+	struct PDFTK_DATA *pdftk = g_malloc(sizeof(struct PDFTK_DATA));
+	pdftk->pdftk_cmd = g_string_new("pdftk");
+	pdftk->tmp_dir = unoconv->tmp_dir;
+	g_string_append(pdftk->pdftk_cmd," ");
+
+
+	//den ListStore durchlaufen lassen, und pfad bauen
+	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_pdftk,(gpointer)pdftk);
+	g_string_append(pdftk->pdftk_cmd," output ");
+	g_string_append(pdftk->pdftk_cmd,keyfile_get_outputdir());
+	g_string_append(pdftk->pdftk_cmd,"/");
+	g_string_append(pdftk->pdftk_cmd,keyfile_get_pdf_name());
+
+	if(!g_spawn_command_line_sync(pdftk->pdftk_cmd->str,NULL,NULL,NULL,&error) ){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
 
 }

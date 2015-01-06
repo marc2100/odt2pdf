@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 struct PDFTK_DATA{
 	GString *pdftk_cmd;
-	gchar *tmp;
+	gchar *tmp_dir;
 };
 
 
@@ -36,6 +36,7 @@ struct UNOCONV_DATA{
 	GPid unoconv_pid;
 	GIOChannel *unoconv_output;
 	GIOChannel *unoconv_error;
+	gchar *tmp_dir;
 };
 
 //G_CALLBACK-Funktionen
@@ -44,6 +45,6 @@ void buttons_entered (GtkWidget *widget, gpointer data);
 void button_exit_clicked(GtkWidget *widget, gpointer data);
 void button_work_clicked(GtkWidget *widget, gpointer data);
 
-//unoconv_pid_watch
+//unoconv_pid_watch wird aufgerufen sobald der unoconv-Prozess beendet ist
 void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data);
 #endif // BUTTONS_H
