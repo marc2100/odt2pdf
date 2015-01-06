@@ -148,17 +148,17 @@ gboolean treemodel_ausgabe_unoconv (GtkTreeModel *model,GtkTreePath *path,GtkTre
 //wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen
 gboolean treemodel_ausgabe_pdftk (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data){
 	gchar *text_data;
-	struct PDFTK_DATA *pdftk = (struct PDFTK_DATA*) data;
+	GString *pdftk = (GString *) data;
 	//Dateiname aus Liststore auslesen
 	gtk_tree_model_get(model,iter,COLUMN_Pfad,&text_data,-1);
-	//Datei mit absolutem Pfad an den command anhängen
 
-	pdftk->pdftk_cmd = (gpointer)g_string_append (pdftk->pdftk_cmd,pdftk->tmp_dir);
-	pdftk->pdftk_cmd = (gpointer)g_string_append (pdftk->pdftk_cmd,"/");
-	pdftk->pdftk_cmd = (gpointer)g_string_append (pdftk->pdftk_cmd,text_data);
+	//Datei mit absolutem Pfad an den command anhängen
+	pdftk = (gpointer)g_string_append (pdftk,temp_dir_get());
+	pdftk = (gpointer)g_string_append (pdftk,"/");
+	pdftk = (gpointer)g_string_append (pdftk,text_data);
 	//das Datenende anpassen, es sind ja mittlerweile pdf daten
-	g_string_overwrite(pdftk->pdftk_cmd,(pdftk->pdftk_cmd->len-4),".pdf");
-	data = (gpointer)g_string_append (pdftk->pdftk_cmd," ");
+	g_string_overwrite(pdftk,(pdftk->len-4),".pdf");
+	pdftk = (gpointer)g_string_append (pdftk," ");
 
 	return FALSE;
 }

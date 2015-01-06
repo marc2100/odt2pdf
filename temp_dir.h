@@ -13,7 +13,11 @@ void temp_dir_save (gchar *dir);
 
 ///gibt das aktuelle Temp_Verzeichnis aus, oder NULL
 ///muss nicht freigegeben werden
-gchar* temo_dir_get (void);
+gchar* temp_dir_get (void);
+
+///gibt das aktuelle Temp_Verzeichnis aus, oder NULL
+///muss mit g_free() freigegeben werden
+gchar* temp_dir_get_strdub (void);
 
 ///löscht das gesetzte Temp_Verzeichnis, anschließend würde
 ///bei abfrage NULL geliefert

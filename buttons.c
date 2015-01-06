@@ -41,9 +41,9 @@ void button_exit_clicked(GtkWidget *widget, gpointer data)
 }
 
 void button_work_clicked(GtkWidget *widget, gpointer data){
-	struct UNOCONV_DATA *unoconv = g_malloc(sizeof(struct UNOCONV_DATA));
 	GError *error=NULL;
 	GPtrArray *unoconv_argv=NULL;
+	GPid unoconv_pid=0;
 
 	//tmp-Ordner anlegen
 	gchar *tmp = g_dir_make_tmp("odt2pdf-gtk_XXXXXX",&error);
@@ -52,16 +52,15 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 		g_error_free(error);
 		error = NULL;
 	}
+	temp_dir_save(g_strdup(tmp));
 
-
-	printf("Das erstellte Verzeichniss ist: %s\n",tmp);
 	//Pfad für unoconv erstellen...
 	unoconv_argv = g_ptr_array_new ();
 	g_ptr_array_add(unoconv_argv,(gpointer)"unoconv");
 	g_ptr_array_add(unoconv_argv,(gpointer)"-f");
 	g_ptr_array_add(unoconv_argv,(gpointer)"pdf");
 	g_ptr_array_add(unoconv_argv,(gpointer)"-o");
-	g_ptr_array_add(unoconv_argv,(gpointer)g_strdup(tmp));
+	g_ptr_array_add(unoconv_argv,(gpointer)temp_dir_get_strdub());
 
 	//wird für jedes Elemt in der Liststore ausgeführt
 	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_unoconv,(gpointer)unoconv_argv);
@@ -76,7 +75,7 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 														G_SPAWN_SEARCH_PATH|G_SPAWN_DO_NOT_REAP_CHILD,
 														NULL,
 														NULL,
-														&unoconv->unoconv_pid,
+														&unoconv_pid,
 														NULL,
 														NULL,
 														NULL,
@@ -87,17 +86,8 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 		error = NULL;
 	}
 
-	//den Pfad für PDFTK speichern, um ihn später im Childwatch aufzurufen
-	unoconv->tmp_dir = g_strdup(tmp);
-
 	//g_child_watch einrichten, um über Programmende informiert zu werden
-	g_child_watch_add(unoconv->unoconv_pid,
-										unoconv_child_watch_func,
-										(gpointer)unoconv);
-
-
-
-
+	g_child_watch_add(unoconv_pid,unoconv_child_watch_func,NULL);
 
 	//strings freigeben
 	g_ptr_array_free (unoconv_argv,TRUE);
@@ -120,8 +110,7 @@ void buttons_entered (GtkWidget *widget, gpointer data){
 
 //unoconv_pid_watch wird aufgerufen sobald der unoconv-Prozess beendet ist
 void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
-	struct UNOCONV_DATA *unoconv = (struct UNOCONV_DATA*) user_data;
-	struct PDFTK_DATA *pdftk = g_malloc(sizeof(struct PDFTK_DATA));
+	GString *pdftk_cmd = NULL;
 	GError *error = NULL;
 
 	//Status abfragen
@@ -132,23 +121,22 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 		error = NULL;
 	}
 	//Pid schließen (ist unter UNIX nicht nötig)
-	g_spawn_close_pid(unoconv->unoconv_pid);
+	g_spawn_close_pid(unoconv_pid);
 
 	//pdftk aufruf bauen
-//	GPtrArray *pdftk_argv=NULL;
-	pdftk->pdftk_cmd = g_string_new("pdftk");
-	pdftk->tmp_dir = unoconv->tmp_dir;
-	g_string_append(pdftk->pdftk_cmd," ");
+	//GPtrArray *pdftk_argv=NULL;
+	pdftk_cmd = g_string_new("pdftk");
+	g_string_append(pdftk_cmd," ");
 
 
 	//den ListStore durchlaufen lassen, und pfad bauen
-	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_pdftk,(gpointer)pdftk);
-	g_string_append(pdftk->pdftk_cmd," output ");
-	g_string_append(pdftk->pdftk_cmd,keyfile_get_outputdir());
-	g_string_append(pdftk->pdftk_cmd,"/");
-	g_string_append(pdftk->pdftk_cmd,keyfile_get_pdf_name());
+	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_pdftk,(gpointer)pdftk_cmd);
+	g_string_append(pdftk_cmd," output ");
+	g_string_append(pdftk_cmd,keyfile_get_outputdir());
+	g_string_append(pdftk_cmd,"/");
+	g_string_append(pdftk_cmd,keyfile_get_pdf_name());
 
-	if(!g_spawn_command_line_sync(pdftk->pdftk_cmd->str,NULL,NULL,NULL,&error) ){
+	if(!g_spawn_command_line_sync(pdftk_cmd->str,NULL,NULL,NULL,&error) ){
 		g_warning("%s",error->message);
 		g_error_free(error);
 		error = NULL;
@@ -156,20 +144,17 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 
 	//aufräumen des temp-verzeichnis
 	GString *rm_cmd = g_string_new("rm -R ");
-	g_string_append(rm_cmd,unoconv->tmp_dir);
+	g_string_append(rm_cmd,temp_dir_get());
 	if(!g_spawn_command_line_sync(rm_cmd->str,NULL,NULL,NULL,&error) ){
 		g_warning("%s",error->message);
 		g_error_free(error);
 		error = NULL;
 	}
 
-	g_free(unoconv);
-	g_string_free(pdftk->pdftk_cmd,TRUE);
+
 	g_string_free(rm_cmd,TRUE);
 	//ist der gleiche der auch in struct unconv steckte
-	g_free(pdftk->tmp_dir);
-	g_free(pdftk);
-
+	temp_dir_clear();
 
 
 	g_print("das PDF \"%s\" wurde unter \"%s\" erstellt\n",keyfile_get_pdf_name(),keyfile_get_outputdir());

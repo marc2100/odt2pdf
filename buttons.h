@@ -27,16 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "keyfile.h"
 #include "temp_dir.h"
 
-struct PDFTK_DATA{
-	GString *pdftk_cmd;
-	gchar *tmp_dir;
-};
-
-
-struct UNOCONV_DATA{
-	GPid unoconv_pid;
-	gchar *tmp_dir;
-};
 
 //G_CALLBACK-Funktionen
 void button_refresh_clicked(GtkWidget *widget, gpointer data);
