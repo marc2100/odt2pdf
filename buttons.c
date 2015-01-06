@@ -135,6 +135,7 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 	g_spawn_close_pid(unoconv->unoconv_pid);
 
 	//pdftk aufruf bauen
+//	GPtrArray *pdftk_argv=NULL;
 	pdftk->pdftk_cmd = g_string_new("pdftk");
 	pdftk->tmp_dir = unoconv->tmp_dir;
 	g_string_append(pdftk->pdftk_cmd," ");
