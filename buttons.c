@@ -37,11 +37,10 @@ void button_exit_clicked(GtkWidget *widget, gpointer data)
 }
 
 void button_work_clicked(GtkWidget *widget, gpointer data){
-	//GString *unoconv_cmd 	= g_string_new("unoconv -f pdf -o ");
 	struct PDFTK_DATA pdftk;
+	struct UNOCONV_DATA *unoconv = g_malloc(sizeof(struct UNOCONV_DATA));
 
 	gint unoconv_output=0, unoconv_error=0;
-	GPid unoconv_pid=0;
 	GError *error=NULL;
 	GPtrArray *unoconv_argv=NULL;
 
@@ -71,10 +70,10 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	status =	g_spawn_async_with_pipes (NULL,
 																			(gchar**)unoconv_argv->pdata,
 																			NULL,
-																			G_SPAWN_SEARCH_PATH,
+																			G_SPAWN_SEARCH_PATH|G_SPAWN_DO_NOT_REAP_CHILD,
 																			NULL,
 																			NULL,
-																			&unoconv_pid,
+																			&unoconv->unoconv_pid,
 																			NULL,
 																			&unoconv_output,
 																			&unoconv_error,
@@ -84,30 +83,17 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 		g_error_free(error);
 		error = NULL;
 	}else{
-		g_print("Unoconv gestartet mit PID:%d\n",unoconv_pid);
+		g_print("Unoconv gestartet mit PID:%d\n",unoconv->unoconv_pid);
 	}
 	//den Output/Error von Unoconv abfragen
-	GIOChannel *unoconv_output_io = g_io_channel_unix_new(unoconv_output);
-	GIOChannel *unoconv_error_io 	= g_io_channel_unix_new(unoconv_error);
+	unoconv->unoconv_output = g_io_channel_unix_new(unoconv_output);
+	unoconv->unoconv_error 	= g_io_channel_unix_new(unoconv_error);
 
-	GString *out = g_string_new(NULL);
-	GString *err = g_string_new(NULL);
+	//g_child_watch einrichten, um über Programmende informiert zu werden
+	g_child_watch_add(unoconv->unoconv_pid,
+										unoconv_child_watch_func,
+										(gpointer)unoconv);
 
-	g_io_channel_read_line_string (unoconv_output_io,out,NULL,&error);
-	if (error!=NULL){
-		g_warning("%s",error->message);
-		g_error_free(error);
-		error = NULL;
-	}
-	g_io_channel_read_line_string (unoconv_error_io,err,NULL,&error);
-	if (error!=NULL){
-		g_warning("%s",error->message);
-		g_error_free(error);
-		error = NULL;
-	}
-
-	g_print("OUTPUT:\t%s\n",out->str);
-	g_print("ERROR:\t%s\n",err->str);
 
 	//pdftk aufruf bauen
 	pdftk.pdftk_cmd = g_string_new("pdftk");
@@ -154,5 +140,44 @@ void buttons_entered (GtkWidget *widget, gpointer data){
   color.blue = 30000;
   color.alpha = 15000;
   gtk_widget_override_background_color(widget, GTK_STATE_PRELIGHT, &color);
+
+}
+
+//unoconv_pid_watch
+void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
+	struct UNOCONV_DATA *unoconv = (struct UNOCONV_DATA*) user_data;
+	GError *error = NULL;
+
+		GString *out = g_string_new(NULL);
+	GString *err = g_string_new(NULL);
+
+	g_io_channel_read_line_string (unoconv->unoconv_output,out,NULL,&error);
+	if (error!=NULL){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+	g_io_channel_read_line_string (unoconv->unoconv_error,err,NULL,&error);
+	if (error!=NULL){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+
+
+
+	//Status abfragen
+	g_spawn_check_exit_status (status,&error);
+	if (error!=NULL){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+		g_print("ERROR:\t%s\n",err->str);
+	}else{
+		g_print("Unoconv mit der Pid: %d ist beendet, mit dem Status: %d\n",unoconv->unoconv_pid,status);
+		g_print("OUTPUT:\t%s\n",out->str);
+	}
+	//Pid schließen (ist unter UNIX nicht nötig)
+	g_spawn_close_pid(unoconv->unoconv_pid);
 
 }

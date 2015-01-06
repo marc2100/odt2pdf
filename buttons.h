@@ -31,12 +31,19 @@ struct PDFTK_DATA{
 	gchar *tmp;
 };
 
+
+struct UNOCONV_DATA{
+	GPid unoconv_pid;
+	GIOChannel *unoconv_output;
+	GIOChannel *unoconv_error;
+};
+
 //G_CALLBACK-Funktionen
 void button_refresh_clicked(GtkWidget *widget, gpointer data);
 void buttons_entered (GtkWidget *widget, gpointer data);
 void button_exit_clicked(GtkWidget *widget, gpointer data);
 void button_work_clicked(GtkWidget *widget, gpointer data);
 
-
-
+//unoconv_pid_watch
+void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data);
 #endif // BUTTONS_H
