@@ -34,8 +34,6 @@ struct PDFTK_DATA{
 
 struct UNOCONV_DATA{
 	GPid unoconv_pid;
-	GIOChannel *unoconv_output;
-	GIOChannel *unoconv_error;
 	gchar *tmp_dir;
 };
 

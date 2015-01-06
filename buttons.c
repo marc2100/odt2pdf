@@ -38,8 +38,6 @@ void button_exit_clicked(GtkWidget *widget, gpointer data)
 
 void button_work_clicked(GtkWidget *widget, gpointer data){
 	struct UNOCONV_DATA *unoconv = g_malloc(sizeof(struct UNOCONV_DATA));
-
-	gint unoconv_output=0, unoconv_error=0;
 	GError *error=NULL;
 	GPtrArray *unoconv_argv=NULL;
 
@@ -67,28 +65,23 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	g_ptr_array_add(unoconv_argv,(gpointer)NULL);
 	//startet den Converter und wartet bis er fertig ist
 	//g_print("%s\n",unoconv_cmd->str);
-	gboolean status = FALSE;
-	status =	g_spawn_async_with_pipes (NULL,
-																			(gchar**)unoconv_argv->pdata,
-																			NULL,
-																			G_SPAWN_SEARCH_PATH|G_SPAWN_DO_NOT_REAP_CHILD,
-																			NULL,
-																			NULL,
-																			&unoconv->unoconv_pid,
-																			NULL,
-																			&unoconv_output,
-																			&unoconv_error,
-																			&error);
+
+	g_spawn_async_with_pipes 	(NULL,
+														(gchar**)unoconv_argv->pdata,
+														NULL,
+														G_SPAWN_SEARCH_PATH|G_SPAWN_DO_NOT_REAP_CHILD,
+														NULL,
+														NULL,
+														&unoconv->unoconv_pid,
+														NULL,
+														NULL,
+														NULL,
+														&error);
 	if (error!=NULL){
 		g_warning("%s",error->message);
 		g_error_free(error);
 		error = NULL;
-	}else{
-		g_print("Unoconv gestartet mit PID:%d\n",unoconv->unoconv_pid);
 	}
-	//den Output/Error von Unoconv abfragen
-	unoconv->unoconv_output = g_io_channel_unix_new(unoconv_output);
-	unoconv->unoconv_error 	= g_io_channel_unix_new(unoconv_error);
 
 	//den Pfad für PDFTK speichern, um ihn später im Childwatch aufzurufen
 	unoconv->tmp_dir = g_strdup(tmp);
@@ -101,8 +94,7 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 
 
 
-	//Verzeichnis löschen
-	//g_rmdir (tmp);
+
 	//strings freigeben
 	g_ptr_array_free (unoconv_argv,TRUE);
 	g_free(tmp);
@@ -123,23 +115,8 @@ void buttons_entered (GtkWidget *widget, gpointer data){
 //unoconv_pid_watch wird aufgerufen sobald der unoconv-Prozess beendet ist
 void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 	struct UNOCONV_DATA *unoconv = (struct UNOCONV_DATA*) user_data;
+	struct PDFTK_DATA *pdftk = g_malloc(sizeof(struct PDFTK_DATA));
 	GError *error = NULL;
-
-	GString *out = g_string_new(NULL);
-	GString *err = g_string_new(NULL);
-
-	g_io_channel_read_line_string (unoconv->unoconv_output,out,NULL,&error);
-	if (error!=NULL){
-		g_warning("%s",error->message);
-		g_error_free(error);
-		error = NULL;
-	}
-	g_io_channel_read_line_string (unoconv->unoconv_error,err,NULL,&error);
-	if (error!=NULL){
-		g_warning("%s",error->message);
-		g_error_free(error);
-		error = NULL;
-	}
 
 	//Status abfragen
 	g_spawn_check_exit_status (status,&error);
@@ -147,16 +124,11 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 		g_warning("%s",error->message);
 		g_error_free(error);
 		error = NULL;
-		g_print("ERROR:\t%s\n",err->str);
-	}else{
-		g_print("Unoconv mit der Pid: %d ist beendet, mit dem Status: %d\n",unoconv->unoconv_pid,status);
-		g_print("OUTPUT:\t%s\n",out->str);
 	}
 	//Pid schließen (ist unter UNIX nicht nötig)
 	g_spawn_close_pid(unoconv->unoconv_pid);
 
 	//pdftk aufruf bauen
-	struct PDFTK_DATA *pdftk = g_malloc(sizeof(struct PDFTK_DATA));
 	pdftk->pdftk_cmd = g_string_new("pdftk");
 	pdftk->tmp_dir = unoconv->tmp_dir;
 	g_string_append(pdftk->pdftk_cmd," ");
@@ -175,4 +147,23 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 		error = NULL;
 	}
 
+	//aufräumen des temp-verzeichnis
+	GString *rm_cmd = g_string_new("rm -R ");
+	g_string_append(rm_cmd,unoconv->tmp_dir);
+	if(!g_spawn_command_line_sync(rm_cmd->str,NULL,NULL,NULL,&error) ){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+
+	g_free(unoconv);
+	g_string_free(pdftk->pdftk_cmd,TRUE);
+	g_string_free(rm_cmd,TRUE);
+	//ist der gleiche der auch in struct unconv steckte
+	g_free(pdftk->tmp_dir);
+	g_free(pdftk);
+
+
+
+	g_print("das PDF \"%s\" wurde unter \"%s\" erstellt\n",keyfile_get_pdf_name(),keyfile_get_outputdir());
 }
