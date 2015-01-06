@@ -19,7 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "buttons.h"
 
+//lokale Funktionen
 
+//True = buttons nicht ausgegraut, False = Buttons ausgegraut
+void buttons_ausgrauen(gboolean status);
+void interface_ausgrauen (gboolean status);
 
 
 void button_refresh_clicked(GtkWidget *widget, gpointer data)
@@ -99,6 +103,8 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	g_ptr_array_free (unoconv_argv,TRUE);
 	g_free(tmp);
 
+	//Buttons ausgrauen
+	interface_ausgrauen(FALSE);
 }
 
 //Ändert die Hintergrundfarbe der Buttons, wenn mit Maus darüber
@@ -166,4 +172,18 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 
 
 	g_print("das PDF \"%s\" wurde unter \"%s\" erstellt\n",keyfile_get_pdf_name(),keyfile_get_outputdir());
+	//Buttons wieder aktivieren
+		interface_ausgrauen(TRUE);
+}
+
+
+void 	buttons_ausgrauen(gboolean status){
+	gtk_widget_set_sensitive (gui_get_button_refresh(),status);
+	gtk_widget_set_sensitive (gui_get_button_exit(),status);
+	gtk_widget_set_sensitive (gui_get_button_work(),status);
+}
+
+void interface_ausgrauen (gboolean status){
+	buttons_ausgrauen(status);
+	gtk_widget_set_sensitive(gui_get_gtk_tree_viewer(),status);
 }

@@ -112,6 +112,14 @@ GtkWidget *gui_get_button_refresh (void){
 	return gui_global.button_refresh;
 }
 
+GtkWidget *gui_get_button_exit (void){
+	return gui_global.button_exit;
+}
+
+GtkWidget *gui_get_button_work (void){
+	return gui_global.button_work;
+}
+
 GtkTreeView *gui_get_gtk_tree_viewer (void){
 	return (GtkTreeView*)gui_global.treeview;
 }

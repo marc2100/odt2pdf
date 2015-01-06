@@ -46,8 +46,11 @@ void gui_init (void);
 
 GtkListStore *gui_model_fill_data (void);
 
-//gibt den Refresh_button zurück
+///Gibt die Buttons zurück
 GtkWidget *gui_get_button_refresh (void);
+GtkWidget *gui_get_button_exit (void);
+GtkWidget *gui_get_button_work (void);
+
 //gibt den Viewer zurück
 GtkTreeView *gui_get_gtk_tree_viewer (void);
 //wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen, um den cmd für unoconv zu bauen
