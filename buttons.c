@@ -60,8 +60,7 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	g_ptr_array_add(unoconv_argv,(gpointer)"pdf");
 	g_ptr_array_add(unoconv_argv,(gpointer)"-o");
 	g_ptr_array_add(unoconv_argv,(gpointer)g_strdup(tmp));
-	//g_string_append(unoconv_cmd,tmp);
-	//g_string_append(unoconv_cmd," ");
+
 	//wird für jedes Elemt in der Liststore ausgeführt
 	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_unoconv,(gpointer)unoconv_argv);
 	//abschließende NULL anhängen
@@ -87,6 +86,29 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	}else{
 		g_print("Unoconv gestartet mit PID:%d\n",unoconv_pid);
 	}
+	//den Output/Error von Unoconv abfragen
+	GIOChannel *unoconv_output_io = g_io_channel_unix_new(unoconv_output);
+	GIOChannel *unoconv_error_io 	= g_io_channel_unix_new(unoconv_error);
+
+	GString *out = g_string_new(NULL);
+	GString *err = g_string_new(NULL);
+
+	g_io_channel_read_line_string (unoconv_output_io,out,NULL,&error);
+	if (error!=NULL){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+	g_io_channel_read_line_string (unoconv_error_io,err,NULL,&error);
+	if (error!=NULL){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+
+	g_print("OUTPUT:\t%s\n",out->str);
+	g_print("ERROR:\t%s\n",err->str);
+
 	//pdftk aufruf bauen
 	pdftk.pdftk_cmd = g_string_new("pdftk");
 
@@ -114,7 +136,7 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	*/
 
 	//Verzeichnis löschen
-	g_rmdir (tmp);
+	//g_rmdir (tmp);
 	//strings freigeben
 	g_ptr_array_free (unoconv_argv,TRUE);
 	g_free(tmp);
