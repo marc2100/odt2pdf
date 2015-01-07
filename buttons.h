@@ -36,4 +36,6 @@ void button_work_clicked(GtkWidget *widget, gpointer data);
 
 //unoconv_pid_watch wird aufgerufen sobald der unoconv-Prozess beendet ist
 void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data);
+//pdftk_pid_watch wird aufgerufen sobald der pdftk-Prozess beendet ist
+void pdftk_child_watch_func (GPid pdftk_pid,gint status,gpointer user_data);
 #endif // BUTTONS_H

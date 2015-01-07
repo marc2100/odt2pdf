@@ -133,9 +133,9 @@ gboolean treemodel_ausgabe_unoconv (GtkTreeModel *model,GtkTreePath *path,GtkTre
 	gtk_tree_model_get(model,iter,COLUMN_Pfad,&text_data,-1);
 
 	//Datei mit absolutem Pfad an ptr_arry hängen
-	data = (gpointer)g_string_append ((GString*)pfad,keyfile_get_searchdir());
-	data = (gpointer)g_string_append ((GString*)pfad,"/");
-	data = (gpointer)g_string_append ((GString*)pfad,text_data);
+	pfad = (gpointer)g_string_append (pfad,keyfile_get_searchdir());
+	pfad = (gpointer)g_string_append (pfad,"/");
+	pfad = (gpointer)g_string_append (pfad,text_data);
 
 	//Pfad als String ins array schreiben
 	g_ptr_array_add(ptr_array,(gpointer)g_strdup(pfad->str));
@@ -148,17 +148,23 @@ gboolean treemodel_ausgabe_unoconv (GtkTreeModel *model,GtkTreePath *path,GtkTre
 //wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen
 gboolean treemodel_ausgabe_pdftk (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data){
 	gchar *text_data;
-	GString *pdftk = (GString *) data;
+	GPtrArray *pdftk_ptr = (GPtrArray *) data;
+	GString *pdftk = g_string_new(NULL);
 	//Dateiname aus Liststore auslesen
 	gtk_tree_model_get(model,iter,COLUMN_Pfad,&text_data,-1);
 
 	//Datei mit absolutem Pfad an den command anhängen
-	pdftk = (gpointer)g_string_append (pdftk,temp_dir_get());
-	pdftk = (gpointer)g_string_append (pdftk,"/");
-	pdftk = (gpointer)g_string_append (pdftk,text_data);
+	pdftk = g_string_append (pdftk,temp_dir_get());
+	pdftk = g_string_append (pdftk,"/");
+	pdftk = g_string_append (pdftk,text_data);
 	//das Datenende anpassen, es sind ja mittlerweile pdf daten
 	g_string_overwrite(pdftk,(pdftk->len-4),".pdf");
-	pdftk = (gpointer)g_string_append (pdftk," ");
+	//datei in argv speichern
+	g_ptr_array_add(pdftk_ptr,pdftk->str);
+	//DEBUG
+	g_print("Pfad=%s\n",pdftk->str);
+	//gstring freigeben
+	g_string_free(pdftk,TRUE);
 
 	return FALSE;
 }

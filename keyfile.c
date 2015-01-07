@@ -169,3 +169,24 @@ gchar *keyfile_get_pdf_name (void)
 
 	return pdfname;
 }
+
+///gibt einen String mit dem Dateinamen (voller Pfad) zurück, wie die PDF-Datei heißen soll,
+///als absoluten Pfad aus.
+///@warning muss mit g_free freigegeben werden
+///@return gchar *filename_full_path
+gchar *keyfile_get_pdf_full_path (void){
+	GString *pfad = g_string_new(NULL);
+	gchar *tmp = NULL;
+
+	tmp = keyfile_get_outputdir();
+	g_string_append(pfad,tmp);
+	g_free(tmp);
+
+	g_string_append(pfad,"/");
+
+	tmp = keyfile_get_pdf_name();
+	g_string_append(pfad,tmp);
+	g_free(tmp);
+
+	return g_string_free(pfad,FALSE);
+}

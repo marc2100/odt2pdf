@@ -52,7 +52,10 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 		g_error_free(error);
 		error = NULL;
 	}
+	//temp_verzeichnis verfügbar machen
 	temp_dir_save(g_strdup(tmp));
+	//DEBUG
+	g_print("%s\n",temp_dir_get());
 
 	//Pfad für unoconv erstellen...
 	unoconv_argv = g_ptr_array_new ();
@@ -110,7 +113,6 @@ void buttons_entered (GtkWidget *widget, gpointer data){
 
 //unoconv_pid_watch wird aufgerufen sobald der unoconv-Prozess beendet ist
 void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
-	GString *pdftk_cmd = NULL;
 	GError *error = NULL;
 
 	//Status abfragen
@@ -124,44 +126,58 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 	g_spawn_close_pid(unoconv_pid);
 
 	//pdftk aufruf bauen
-	//GPtrArray *pdftk_argv=NULL;
-	pdftk_cmd = g_string_new("pdftk");
-	g_string_append(pdftk_cmd," ");
-
+	GPtrArray *pdftk_argv= g_ptr_array_new ();
+	GPid pdftk_pid=0;
+	g_ptr_array_add(pdftk_argv,(gpointer)"pdftk");
 
 	//den ListStore durchlaufen lassen, und pfad bauen
-	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_pdftk,(gpointer)pdftk_cmd);
-	g_string_append(pdftk_cmd," output ");
-	g_string_append(pdftk_cmd,keyfile_get_outputdir());
-	g_string_append(pdftk_cmd,"/");
-	g_string_append(pdftk_cmd,keyfile_get_pdf_name());
-
-	if(!g_spawn_command_line_sync(pdftk_cmd->str,NULL,NULL,NULL,&error) ){
+	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_pdftk,(gpointer)pdftk_argv);
+	g_ptr_array_add(pdftk_argv,"output");
+	//speichert den Pfad
+	g_ptr_array_add(pdftk_argv,(gpointer)keyfile_get_pdf_full_path());
+	g_ptr_array_add(pdftk_argv,(gpointer)NULL);
+	//PDF zusammenfügen
+	g_spawn_async_with_pipes (NULL,
+														(gchar**)pdftk_argv->pdata,
+														NULL,
+														G_SPAWN_SEARCH_PATH|G_SPAWN_DO_NOT_REAP_CHILD,
+														NULL,
+														NULL,
+														&pdftk_pid,
+														NULL,
+														NULL,
+														NULL,
+														&error);
+	if (error!=NULL){
 		g_warning("%s",error->message);
 		g_error_free(error);
 		error = NULL;
 	}
 
-	//aufräumen des temp-verzeichnis
-	GString *rm_cmd = g_string_new("rm -R ");
-	g_string_append(rm_cmd,temp_dir_get());
-	if(!g_spawn_command_line_sync(rm_cmd->str,NULL,NULL,NULL,&error) ){
-		g_warning("%s",error->message);
-		g_error_free(error);
-		error = NULL;
-	}
+	//g_child_watch einrichten, um über Programmende(pdftk) informiert zu werden
+	g_child_watch_add(pdftk_pid,pdftk_child_watch_func,NULL);
 
-
-	g_string_free(rm_cmd,TRUE);
-	//ist der gleiche der auch in struct unconv steckte
-	temp_dir_clear();
-
-
-	g_print("das PDF \"%s\" wurde unter \"%s\" erstellt\n",keyfile_get_pdf_name(),keyfile_get_outputdir());
+	//g_print("das PDF \"%s\" wurde unter \"%s\" erstellt\n",keyfile_get_pdf_name(),keyfile_get_outputdir());
 	//Buttons wieder aktivieren
 		interface_ausgrauen(TRUE);
 }
 
+//pdftk_pid_watch wird aufgerufen sobald der pdftk-Prozess beendet ist
+void pdftk_child_watch_func (GPid pdftk_pid,gint status,gpointer user_data){
+	GError *error = NULL;
+
+	//Status abfragen
+	g_spawn_check_exit_status (status,&error);
+	if (error!=NULL){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+	//Pid schließen (ist unter UNIX nicht nötig)
+	g_spawn_close_pid(pdftk_pid);
+	interface_ausgrauen(TRUE);
+	temp_dir_delete();
+}
 
 void 	buttons_ausgrauen(gboolean status){
 	gtk_widget_set_sensitive (gui_get_button_refresh(),status);
@@ -173,3 +189,4 @@ void interface_ausgrauen (gboolean status){
 	buttons_ausgrauen(status);
 	gtk_widget_set_sensitive(gui_get_gtk_tree_viewer(),status);
 }
+

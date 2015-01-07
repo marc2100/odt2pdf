@@ -46,4 +46,10 @@ gchar *keyfile_get_outputdir (void);
 ///@return gchar *filename
 gchar *keyfile_get_pdf_name (void);
 
+///gibt einen String mit dem Dateinamen (voller Pfad) zurück, wie die PDF-Datei heißen soll,
+///als absoluten Pfad aus.
+///@warning muss mit g_free freigegeben werden
+///@return gchar *filename_full_path
+gchar *keyfile_get_pdf_full_path (void);
+
 #endif // KEYFILE_H
