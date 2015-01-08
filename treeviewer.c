@@ -159,12 +159,8 @@ gboolean treemodel_ausgabe_pdftk (GtkTreeModel *model,GtkTreePath *path,GtkTreeI
 	pdftk = g_string_append (pdftk,text_data);
 	//das Datenende anpassen, es sind ja mittlerweile pdf daten
 	g_string_overwrite(pdftk,(pdftk->len-4),".pdf");
-	//datei in argv speichern
-	g_ptr_array_add(pdftk_ptr,pdftk->str);
-	//DEBUG
-	g_print("Pfad=%s\n",pdftk->str);
-	//gstring freigeben
-	g_string_free(pdftk,TRUE);
+	//datei in argv speichern, und gstring auflösen
+	g_ptr_array_add(pdftk_ptr,(gpointer)g_string_free(pdftk,FALSE));
 
 	return FALSE;
 }

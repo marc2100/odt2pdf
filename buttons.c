@@ -136,6 +136,12 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 	//speichert den Pfad
 	g_ptr_array_add(pdftk_argv,(gpointer)keyfile_get_pdf_full_path());
 	g_ptr_array_add(pdftk_argv,(gpointer)NULL);
+
+	int i=0;
+	while (g_ptr_array_index(pdftk_argv,i)){
+		printf("Pointer (%d) = %s\n",i,g_ptr_array_index(pdftk_argv,i));
+		i++;
+	}
 	//PDF zusammenfügen
 	g_spawn_async_with_pipes (NULL,
 														(gchar**)pdftk_argv->pdata,
