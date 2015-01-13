@@ -127,13 +127,15 @@ GtkTreeView *gui_get_gtk_tree_viewer (void){
 //wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen
 gboolean treemodel_ausgabe_unoconv (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data){
 	GPtrArray *ptr_array = (GPtrArray *)data;
-	gchar *text_data;
+	gchar *text_data,*ptr;
 	GString *pfad = g_string_new(NULL);
 	//Dateiname aus Liststore auslesen
 	gtk_tree_model_get(model,iter,COLUMN_Pfad,&text_data,-1);
 
 	//Datei mit absolutem Pfad an ptr_arry hängen
-	pfad = (gpointer)g_string_append (pfad,keyfile_get_searchdir());
+	ptr = keyfile_get_searchdir();
+	pfad = (gpointer)g_string_append (pfad,ptr);
+	g_free(ptr);
 	pfad = (gpointer)g_string_append (pfad,"/");
 	pfad = (gpointer)g_string_append (pfad,text_data);
 

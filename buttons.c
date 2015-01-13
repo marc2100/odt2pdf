@@ -21,9 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //lokale Funktionen
 
-//True = buttons nicht ausgegraut, False = Buttons ausgegraut
-void buttons_ausgrauen(gboolean status);
-void interface_ausgrauen (gboolean status);
+
+
 
 
 void button_refresh_clicked(GtkWidget *widget, gpointer data)
@@ -59,10 +58,14 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 
 	//Pfad für unoconv erstellen...
 	unoconv_argv = g_ptr_array_new ();
-	g_ptr_array_add(unoconv_argv,(gpointer)"unoconv");
-	g_ptr_array_add(unoconv_argv,(gpointer)"-f");
-	g_ptr_array_add(unoconv_argv,(gpointer)"pdf");
-	g_ptr_array_add(unoconv_argv,(gpointer)"-o");
+	//function zum aufräumen übergeben
+	g_ptr_array_set_free_func(unoconv_argv,ptr_array_clean);
+
+	//ptr_array füllen
+	fill_g_ptr_array(unoconv_argv,"unoconv");
+	fill_g_ptr_array(unoconv_argv,"-f");
+	fill_g_ptr_array(unoconv_argv,"pdf");
+	fill_g_ptr_array(unoconv_argv,"-o");
 	g_ptr_array_add(unoconv_argv,(gpointer)temp_dir_get_strdub());
 
 	//wird für jedes Elemt in der Liststore ausgeführt
@@ -127,21 +130,19 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 
 	//pdftk aufruf bauen
 	GPtrArray *pdftk_argv= g_ptr_array_new ();
+	//Funktion zum aufräumen setzten
+	g_ptr_array_set_free_func(pdftk_argv,ptr_array_clean);
+
 	GPid pdftk_pid=0;
-	g_ptr_array_add(pdftk_argv,(gpointer)"pdftk");
+	fill_g_ptr_array (pdftk_argv,"pdftk");
 
 	//den ListStore durchlaufen lassen, und pfad bauen
 	gtk_tree_model_foreach(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()),treemodel_ausgabe_pdftk,(gpointer)pdftk_argv);
-	g_ptr_array_add(pdftk_argv,"output");
+	fill_g_ptr_array (pdftk_argv,"output");
 	//speichert den Pfad
 	g_ptr_array_add(pdftk_argv,(gpointer)keyfile_get_pdf_full_path());
 	g_ptr_array_add(pdftk_argv,(gpointer)NULL);
 
-	int i=0;
-	while (g_ptr_array_index(pdftk_argv,i)){
-		printf("Pointer (%d) = %s\n",i,g_ptr_array_index(pdftk_argv,i));
-		i++;
-	}
 	//PDF zusammenfügen
 	g_spawn_async_with_pipes (NULL,
 														(gchar**)pdftk_argv->pdata,
@@ -162,7 +163,8 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 
 	//g_child_watch einrichten, um über Programmende(pdftk) informiert zu werden
 	g_child_watch_add(pdftk_pid,pdftk_child_watch_func,NULL);
-
+	//aufräumen
+	g_ptr_array_free(pdftk_argv,TRUE);
 	//g_print("das PDF \"%s\" wurde unter \"%s\" erstellt\n",keyfile_get_pdf_name(),keyfile_get_outputdir());
 	//Buttons wieder aktivieren
 		interface_ausgrauen(TRUE);
@@ -185,14 +187,6 @@ void pdftk_child_watch_func (GPid pdftk_pid,gint status,gpointer user_data){
 	temp_dir_delete();
 }
 
-void 	buttons_ausgrauen(gboolean status){
-	gtk_widget_set_sensitive (gui_get_button_refresh(),status);
-	gtk_widget_set_sensitive (gui_get_button_exit(),status);
-	gtk_widget_set_sensitive (gui_get_button_work(),status);
-}
 
-void interface_ausgrauen (gboolean status){
-	buttons_ausgrauen(status);
-	gtk_widget_set_sensitive(gui_get_gtk_tree_viewer(),status);
-}
+
 

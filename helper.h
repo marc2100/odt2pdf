@@ -16,27 +16,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-#ifndef BUTTONS_H
-#define BUTTONS_H
+#ifndef HELPER_H
+#define HELPER_H
 
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include "treeviewer.h"
 #include "dir_read.h"
 #include "keyfile.h"
-#include "temp_dir.h"
-#include "helper.h"
 
+///gibt den Speicher im Array frei..
+void ptr_array_clean (gpointer data);
 
-//G_CALLBACK-Funktionen
-void button_refresh_clicked(GtkWidget *widget, gpointer data);
-void buttons_entered (GtkWidget *widget, gpointer data);
-void button_exit_clicked(GtkWidget *widget, gpointer data);
-void button_work_clicked(GtkWidget *widget, gpointer data);
+///füllt das Array mit dem String, dieser kann danach einfacg per g_free(),
+///freigegeben werden, wenn das Array zustört wird.
+void fill_g_ptr_array (GPtrArray *ptr_array,gchar* data);
 
-//unoconv_pid_watch wird aufgerufen sobald der unoconv-Prozess beendet ist
-void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data);
-//pdftk_pid_watch wird aufgerufen sobald der pdftk-Prozess beendet ist
-void pdftk_child_watch_func (GPid pdftk_pid,gint status,gpointer user_data);
-#endif // BUTTONS_H
+//True = buttons nicht ausgegraut, False = Buttons ausgegraut
+void buttons_ausgrauen(gboolean status);
+void interface_ausgrauen (gboolean status);
+
+#endif // HELPER_H
