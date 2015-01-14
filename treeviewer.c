@@ -41,7 +41,7 @@ void gui_init (void){
   gui->button_work		= GTK_WIDGET (gtk_builder_get_object(builder,"button_work"));
 
 	//Eigenschaften des Main-Window setzen
-	gtk_window_set_title(GTK_WINDOW(gui->mainwindow), "odt2pft-gtkr");
+	gtk_window_set_title(GTK_WINDOW(gui->mainwindow), "odt2pft-gtk");
   gtk_window_set_default_size(GTK_WINDOW(gui->mainwindow), 1500, 400);
   gtk_window_set_position(GTK_WINDOW(gui->mainwindow), GTK_WIN_POS_CENTER);
 

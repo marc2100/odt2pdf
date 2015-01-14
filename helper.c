@@ -3,7 +3,7 @@
 //gibt den Speicher im Array frei..
 void ptr_array_clean (gpointer data){
 	static gint i=0;
-	g_print("i = %d\tText = %s\n",i,data);
+	g_print("i = %d\tText = %s\n",i,(gchar*)data);
 	g_free(data);
 	i++;
 }
@@ -25,5 +25,5 @@ void 	buttons_ausgrauen(gboolean status){
 
 void interface_ausgrauen (gboolean status){
 	buttons_ausgrauen(status);
-	gtk_widget_set_sensitive(gui_get_gtk_tree_viewer(),status);
+	gtk_widget_set_sensitive((GtkWidget*)gui_get_gtk_tree_viewer(),status);
 }

@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="../odt2pdf-gtk" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -22,6 +23,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="../odt2pdf-gtk" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -43,6 +45,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="dir_read.h" />
+		<Unit filename="helper.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="helper.h" />
 		<Unit filename="keyfile.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -50,6 +56,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="temp_dir.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="temp_dir.h" />
 		<Unit filename="treeviewer.c">
 			<Option compilerVar="CC" />
 		</Unit>
