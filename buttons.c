@@ -187,6 +187,30 @@ void pdftk_child_watch_func (GPid pdftk_pid,gint status,gpointer user_data){
 	temp_dir_delete();
 }
 
+void button_setting_clicked (GtkWidget *widget, gpointer data){
+	//Dialog für Ordner auswahl erstellen
+	GtkWidget *dialog;
+	dialog = gtk_file_chooser_dialog_new ("Open Folder",
+																				NULL,
+																				GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER|GTK_FILE_CHOOSER_ACTION_OPEN,
+																				GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+				      													GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,NULL);
+	//Dialog starten
+	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
+    gchar *folder;
+    folder = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+		keyfile_set_search_dir (folder);
+		g_print("Ordner :\n");
+		g_print("%s",folder);
+		g_print("\ngespeichert...\n");
+    g_free (folder);
 
+  }
+  else {
+  	g_print("Setting abgebrochen\n");
+  }
+
+gtk_widget_destroy (dialog);
+}
 
 

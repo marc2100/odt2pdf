@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define keyfile_file "odt2pdf-gtk.conf"
 
+
 ///läd die Keyfile *filename oder bie NULL die default keyfile_file
 ///@return true bei erfolg, bei fehlern false
 gboolean keyfile_init (const gchar *filename);
@@ -51,5 +52,8 @@ gchar *keyfile_get_pdf_name (void);
 ///@warning muss mit g_free freigegeben werden
 ///@return gchar *filename_full_path
 gchar *keyfile_get_pdf_full_path (void);
+
+///speichert den übergebenen Pfad in der Keyfile
+void keyfile_set_search_dir (const gchar *folderpath);
 
 #endif // KEYFILE_H

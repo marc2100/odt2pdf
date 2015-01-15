@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 GKeyFile *global_keyfile = NULL;
 
 
-//läd die Keyfile *filename oder bie NULL die default keyfile_file
+//läd die Keyfile *filename oder bei NULL die default keyfile_file
 //@return true bei erfolg, bei fehlern false
 gboolean keyfile_init (const gchar *filename){
 	GError *error = NULL;
@@ -189,4 +189,19 @@ gchar *keyfile_get_pdf_full_path (void){
 	g_free(tmp);
 
 	return g_string_free(pfad,FALSE);
+}
+
+///speichert den übergebenen Pfad in der Keyfile
+void keyfile_set_search_dir (const gchar *folderpath){
+	GError *error = NULL;
+
+	//neuen Pfad speichern
+	g_key_file_set_string(global_keyfile,"Ordner","Verzeichnis",folderpath);
+	//keyfile speichern auf HDD, damit die einstellungen erhalten bleiben
+	g_key_file_save_to_file(global_keyfile,keyfile_file,&error);
+	if (error!=NULL){
+		g_error("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
 }
