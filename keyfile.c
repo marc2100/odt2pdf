@@ -205,3 +205,19 @@ void keyfile_set_search_dir (const gchar *folderpath){
 		error = NULL;
 	}
 }
+
+///speichert den übergebenen Pfad in der Keyfile,
+///um zu bestimmen, wohin das fertige PDF gespeichert wird
+void keyfile_set_save_as_dir (const gchar *path){
+	GError *error = NULL;
+
+	//neuen Pfad speichern
+	g_key_file_set_string(global_keyfile,"Ordner","Output",path);
+	//keyfile speichern auf HDD, damit die einstellungen erhalten bleiben
+	g_key_file_save_to_file(global_keyfile,keyfile_file,&error);
+	if (error!=NULL){
+		g_error("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+}

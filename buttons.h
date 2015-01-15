@@ -34,7 +34,9 @@ void button_refresh_clicked(GtkWidget *widget, gpointer data);
 void buttons_entered (GtkWidget *widget, gpointer data);
 void button_exit_clicked(GtkWidget *widget, gpointer data);
 void button_work_clicked(GtkWidget *widget, gpointer data);
-void button_setting_clicked (GtkWidget *widget, gpointer data);
+void button_open_clicked (GtkWidget *widget, gpointer data);
+void button_save_as_clicked (GtkWidget *widget, gpointer data);
+
 //unoconv_pid_watch wird aufgerufen sobald der unoconv-Prozess beendet ist
 void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data);
 //pdftk_pid_watch wird aufgerufen sobald der pdftk-Prozess beendet ist

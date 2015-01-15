@@ -60,7 +60,8 @@ void gui_init (void){
 
 	//Menüsignale verknüpfen
 	g_signal_connect(gtk_builder_get_object(builder,"imagemenuitem5"),"activate",G_CALLBACK(button_exit_clicked), NULL);
-	g_signal_connect(gtk_builder_get_object(builder,"imagemenuitem2"),"activate",G_CALLBACK(button_setting_clicked), NULL);
+	g_signal_connect(gtk_builder_get_object(builder,"imagemenuitem2"),"activate",G_CALLBACK(button_open_clicked), NULL);
+	g_signal_connect(gtk_builder_get_object(builder,"output_path_menuitem"),"activate",G_CALLBACK(button_save_as_clicked), NULL);
 
 	//Buttons einfärben, wenn mit Maus darüber
 	g_signal_connect(gui->button_refresh,"enter",G_CALLBACK(buttons_entered), NULL);
