@@ -31,16 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "buttons.h"
 #include "dir_read.h"
 
-///@struct GUI_ELEMENTE
-///beinhaltet alle wichtigen GUI Elemente
-struct GUI_ELEMENTE{
-	GtkWidget *mainwindow;			///<das Main-Window
-	GtkWidget *treeview;				///<den Treeviewer
-	GtkWidget *button_refresh;	///<den Refresh-Button
-	GtkWidget *button_exit;			///<den Exit-Button
-	GtkWidget *button_work;			///<den Ausführen-Button
-	GtkWidget *statusbar;				///<die Statusbar
-};
+
 
 enum {
   COLUMN_ID,

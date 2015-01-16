@@ -22,9 +22,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ///initialisiert, sowie der Treeviewer bearbeitet.
 
 #include "treeviewer.h"
+
+///@struct GUI_ELEMENTE
+///beinhaltet alle wichtigen GUI Elemente
+struct GUI_ELEMENTE{
+	GtkWidget *mainwindow;			///<das Main-Window
+	GtkWidget *treeview;				///<den Treeviewer
+	GtkWidget *button_refresh;	///<den Refresh-Button
+	GtkWidget *button_exit;			///<den Exit-Button
+	GtkWidget *button_work;			///<den Ausführen-Button
+	GtkWidget *statusbar;				///<die Statusbar
+};
+
 //globale Variablen
+
+///@brief lokale Variable um GUI-Elemente zu speichern
 struct GUI_ELEMENTE gui_global;
-//globaler Eintrag für Spaltennamen
+
+///@brief globaler Eintrag für Spaltennamen
 gchar * const string_viewer_header[] = {"ID","Datei"};
 
 
