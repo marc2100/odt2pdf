@@ -17,6 +17,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+///@file temp_dir.h
+///Hier sind alle Funktionen deklariert, die das Temp-Verzeichnis,
+///das zum arbeiten gebraucht wird, betreffen.
+
 #ifndef TEMP_DIR_H
 #define TEMP_DIR_H
 

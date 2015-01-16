@@ -17,6 +17,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+///@file keyfile.h
+///Hier sind alle globalen Funktionen deklariert,
+///um die Keyfile auslesen zu lassen, und die jeweilig
+///interessante Information zu erhalten.
+///Zudem wird hier der default-Standart für die Keyfile eingestellt
+
 #ifndef KEYFILE_H
 #define KEYFILE_H
 
@@ -24,11 +30,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <gtk/gtk.h>
 #include "treeviewer.h"
 
+///@brief Keyfile die per default geladen wird
 #define keyfile_file "odt2pdf-gtk.conf"
 
 
-///läd die Keyfile *filename oder bie NULL die default keyfile_file
+///läd die Keyfile filename oder bei NULL die default keyfile_file odt2pdf-gtk.conf
 ///@return true bei erfolg, bei fehlern false
+///@param filename Pfadangabe zur Keyfile, oder NULL
 gboolean keyfile_init (const gchar *filename);
 
 

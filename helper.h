@@ -16,6 +16,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+///@file helper.h
+///Sammlung von Hilfsfunktionen, die sonst nicht zugeordnet
+///werden konnten.
+
 #ifndef HELPER_H
 #define HELPER_H
 
@@ -28,12 +33,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ///gibt den Speicher im Array frei..
 void ptr_array_clean (gpointer data);
 
-///füllt das Array mit dem String, dieser kann danach einfacg per g_free(),
+///füllt das Array mit dem String, dieser kann danach einfach per g_free(),
 ///freigegeben werden, wenn das Array zustört wird.
 void fill_g_ptr_array (GPtrArray *ptr_array,gchar* data);
 
-//True = buttons nicht ausgegraut, False = Buttons ausgegraut
+
+///graut die Buttons im Interface aus
+///@param status True=aktive False=ausgegraut
 void buttons_ausgrauen(gboolean status);
+
+///graut das ganze Interface aus (mit den Buttons)
+///@param status True=aktive False=ausgegraut
 void interface_ausgrauen (gboolean status);
 
 #endif // HELPER_H

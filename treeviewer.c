@@ -16,6 +16,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+///@file treeviewer.c
+///Hier sind alle Funktionen definiert die das eigentliche Fenster
+///betreffen, so wird auch die eigentliche GUI hier
+///initialisiert, sowie der Treeviewer bearbeitet.
 
 #include "treeviewer.h"
 //globale Variablen
@@ -23,9 +27,9 @@ struct GUI_ELEMENTE gui_global;
 //globaler Eintrag für Spaltennamen
 gchar * const string_viewer_header[] = {"ID","Datei"};
 
-//lokale funtionen
 
 
+///initiiert die GUI, und startet damit das eigentliche Programm
 void gui_init (void){
 
 	//Builder erstellen
@@ -96,15 +100,16 @@ void gui_init (void){
   return;
   }
 
+///erzeugt einen GtkListStore und füllt ihn mit Daten
+///@return GtkListStore *
 GtkListStore *gui_model_fill_data (void){
 	//Variablen anlegen
 	GtkListStore *store = NULL;
 	//store erstellen um Daten für Tree-viewer zu speichern
-	store	= gtk_list_store_new (N_COLUMNS,					//anzahl an Spalten
+	store	= gtk_list_store_new (N_COLUMNS,			//anzahl an Spalten
 															G_TYPE_INT,			//Datei
-															G_TYPE_STRING);			//Pfad
+															G_TYPE_STRING);	//Pfad
 	ordner_auslesen(store);
-
 
 	return store;
 }
@@ -112,24 +117,31 @@ GtkListStore *gui_model_fill_data (void){
 
 
 
-//gibt den Refresh_button zurück
+///Gibt einen pointer auf den button_refresh zurück
+///@return GtkWidget *button_refresh
 GtkWidget *gui_get_button_refresh (void){
 	return gui_global.button_refresh;
 }
 
+///Gibt einen pointer auf den button_exit zurück
+///@return GtkWidget *button_exit
 GtkWidget *gui_get_button_exit (void){
 	return gui_global.button_exit;
 }
 
+///Gibt einen pointer auf den button_work zurück
+///@return GtkWidget *button_work
 GtkWidget *gui_get_button_work (void){
 	return gui_global.button_work;
 }
 
+///Gibt einen pointer auf den Viewer zurück
+///@return GtkWidget *treeviewer
 GtkTreeView *gui_get_gtk_tree_viewer (void){
 	return (GtkTreeView*)gui_global.treeview;
 }
 
-//wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen
+///wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen, um den cmd für unoconv zu bauen
 gboolean treemodel_ausgabe_unoconv (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data){
 	GPtrArray *ptr_array = (GPtrArray *)data;
 	gchar *text_data,*ptr;
@@ -152,7 +164,7 @@ gboolean treemodel_ausgabe_unoconv (GtkTreeModel *model,GtkTreePath *path,GtkTre
 	return FALSE;
 }
 
-//wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen
+///wird bei der ausgabe der sortierten Anzeige, für jedes Element aufgerufen, um den cmd für pdftk zu bauen
 gboolean treemodel_ausgabe_pdftk (GtkTreeModel *model,GtkTreePath *path,GtkTreeIter *iter,gpointer data){
 	gchar *text_data;
 	GPtrArray *pdftk_ptr = (GPtrArray *) data;

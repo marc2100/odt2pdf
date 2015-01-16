@@ -16,13 +16,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+///@file dir_read.c
+///Hier sind alle Funktionen definiert um den Quellordner,
+///mit den odt-Dateien auszulesen.
+
 #include "dir_read.h"
 
 //Lokale Funktionen
 ///sortiert alle Einträge aus, bis auf *.odf-dateien
+///@return dateipfad
 gchar* dateifilter (gchar const *pfad);
+
 ///gibt die Einträge aus
 void ausgabe (gint *id,gchar const *pfad,GtkListStore *list_store);
+
 
 ///ließt die Einträge aus dem in der Keyfile
 ///angegebenen Ordner aus

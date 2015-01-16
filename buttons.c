@@ -17,13 +17,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+///@file buttons.c
+///Hier sind alle Funktionen definiert die die Buttons betreffen,
+///wie alle G_CALLBACK-Funktionen.
+
 #include "buttons.h"
-
-//lokale Funktionen
-
-
-
-
 
 void button_refresh_clicked(GtkWidget *widget, gpointer data)
 {

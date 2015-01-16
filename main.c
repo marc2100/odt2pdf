@@ -16,6 +16,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+///@file main.c
+///Startpunkt für das Programm, hier werden
+///auch die übergeben Konsolenbefehle an
+///GTK weitergeleitet, und die Gui initiiert.
 
 #include <stdlib.h>
 #include <gtk/gtk.h>
@@ -35,6 +39,7 @@ int main (int argc, char *argv[])
   //Keyfile laden
   keyfile_init (NULL);
 
+	//
 	gui_init ();
   return 0;
 }

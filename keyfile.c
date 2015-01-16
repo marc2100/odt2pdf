@@ -16,13 +16,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+///@file keyfile.c
+///Hier sind alle globalen Funktionen definiert @see keyfile.h
 
 #include "keyfile.h"
+
+///@brief lokale Variable, die nur intern in keyfile.c benutzt wird
 GKeyFile *global_keyfile = NULL;
 
 
-//läd die Keyfile *filename oder bei NULL die default keyfile_file
-//@return true bei erfolg, bei fehlern false
+///läd die Keyfile *filename oder bie NULL die default keyfile_file
+///@return true bei erfolg, bei fehlern false
 gboolean keyfile_init (const gchar *filename){
 	GError *error = NULL;
 	GKeyFile *keyfile;

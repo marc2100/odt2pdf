@@ -16,6 +16,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+///@file temp_dir.c
+///Hier sind alle Funktionen definiert, die das Temp-Verzeichnis betreffen @see temp_dir.h
+
 #include "temp_dir.h"
 static gchar *global_temp_dir = NULL;
 
