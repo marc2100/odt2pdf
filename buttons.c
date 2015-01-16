@@ -190,11 +190,11 @@ void pdftk_child_watch_func (GPid pdftk_pid,gint status,gpointer user_data){
 void button_open_clicked (GtkWidget *widget, gpointer data){
 	//Dialog für Ordner auswahl erstellen
 	GtkWidget *dialog;
-	dialog = gtk_file_chooser_dialog_new ("Open Folder",
+	dialog = gtk_file_chooser_dialog_new ("Quellordner auswählen",
 																				NULL,
 																				GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER|GTK_FILE_CHOOSER_ACTION_OPEN,
-																				GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-				      													GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,NULL);
+																				"_Cancel", GTK_RESPONSE_CANCEL,
+				      													"_Open", GTK_RESPONSE_ACCEPT,NULL);
 	//Dialog starten
 	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
     gchar *folder;
@@ -216,11 +216,11 @@ gtk_widget_destroy (dialog);
 void button_save_as_clicked (GtkWidget *widget, gpointer data){
 	//Dialog für Ordner auswahl erstellen
 	GtkWidget *dialog;
-	dialog = gtk_file_chooser_dialog_new ("Open Folder",
+	dialog = gtk_file_chooser_dialog_new ("Zielverzeichnis wählen",
 																				NULL,
 																				GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER|GTK_FILE_CHOOSER_ACTION_OPEN,
-																				GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-				      													GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,NULL);
+																				"_Cancel", GTK_RESPONSE_CANCEL,
+				      													"_Open", GTK_RESPONSE_ACCEPT,NULL);
 	//Dialog starten
 	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT){
     gchar *folder;
@@ -237,4 +237,8 @@ void button_save_as_clicked (GtkWidget *widget, gpointer data){
   }
 
 gtk_widget_destroy (dialog);
+}
+
+void button_about_clicked (GtkWidget *widget, gpointer data){
+	g_print ("Button gtk-about gedrückt\n");
 }
