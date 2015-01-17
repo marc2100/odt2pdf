@@ -239,9 +239,19 @@ gtk_widget_destroy (dialog);
 }
 
 void button_about_clicked (GtkWidget *widget, gpointer data){
+	GdkPixbuf *logo = NULL;
+	GError *error = NULL;
 	GtkWidget *about = gtk_about_dialog_new();
 	gchar *authors[] = {"Marcus Pries <email@marcus-pries.de>",NULL};
 	gchar *documenters[] = {"Marcus Pries <email@marcus-pries.de>",NULL};
+
+	logo = gdk_pixbuf_new_from_file ("./icon/Icon_odt2pdf_64x64.svg",&error);
+	if (error!=NULL){
+		g_error("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+	gtk_about_dialog_set_logo(about,logo);
 
 	gtk_about_dialog_set_version (about,"0.6");
 	gtk_about_dialog_set_copyright(about,"Marcus Pries <email@marcus-pries.de>");
