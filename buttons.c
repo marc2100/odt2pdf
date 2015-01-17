@@ -3,7 +3,7 @@ Copyright (c) 2014 "Marcus Pries"
 
 This file is part of odt2pdf-gtk.
 
-mysqlviewer is free software: you can redistribute it and/or modify
+odt2pdf-gtk is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -239,5 +239,18 @@ gtk_widget_destroy (dialog);
 }
 
 void button_about_clicked (GtkWidget *widget, gpointer data){
-	g_print ("Button gtk-about gedrückt\n");
+	GtkWidget *about = gtk_about_dialog_new();
+	gchar *authors[] = {"Marcus Pries <email@marcus-pries.de>",NULL};
+	gchar *documenters[] = {"Marcus Pries <email@marcus-pries.de>",NULL};
+
+	gtk_about_dialog_set_version (about,"0.6");
+	gtk_about_dialog_set_copyright(about,"Marcus Pries <email@marcus-pries.de>");
+	gtk_about_dialog_set_comments (about,"Mit diesem Programm kann man odt-Dateien sortieren,\nund daraus ein PDF-Dokument erstellen lassen.");
+	gtk_about_dialog_set_license (about,"GPL 3.0 or later");
+	gtk_about_dialog_set_license_type (about,GTK_LICENSE_GPL_3_0);
+	gtk_about_dialog_set_authors (about,&authors);
+	gtk_about_dialog_set_documenters(about,&documenters);
+
+	gtk_dialog_run (GTK_DIALOG (about));
+  gtk_widget_destroy (about);
 }

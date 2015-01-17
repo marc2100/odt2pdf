@@ -37,6 +37,10 @@
 		<Linker>
 			<Add option="`pkg-config gtk+-3.0 --libs`" />
 		</Linker>
+		<ExtraCommands>
+			<Add after="doxygen /home/marc2100/Dokumente/codeblocks/odt2pdf-gtk/doxygen.txt" />
+			<Mode after="always" />
+		</ExtraCommands>
 		<Unit filename="buttons.c">
 			<Option compilerVar="CC" />
 		</Unit>
