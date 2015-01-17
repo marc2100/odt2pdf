@@ -30,6 +30,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "dir_read.h"
 #include "keyfile.h"
 
+///@brief definiert die Programm Version
+#define odt2pdf_gtk_version "0.7"
+
 ///gibt den Speicher im Array frei..
 void ptr_array_clean (gpointer data);
 
