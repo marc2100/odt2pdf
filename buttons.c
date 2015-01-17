@@ -43,6 +43,10 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	GPtrArray *unoconv_argv=NULL;
 	GPid unoconv_pid=0;
 
+	//prüfen ob überhaupt Daten im Model verfügbar sind
+	if (!gtk_tree_model_get_n_columns(gtk_tree_view_get_model(gui_get_gtk_tree_viewer()))){
+		return;
+	}
 	//tmp-Ordner anlegen
 	gchar *tmp = g_dir_make_tmp("odt2pdf-gtk_XXXXXX",&error);
 	if (error!=NULL){
@@ -246,16 +250,19 @@ void button_about_clicked (GtkWidget *widget, gpointer data){
 	gchar *documenters[] = {"Marcus Pries <email@marcus-pries.de>",NULL};
 	gchar *about_icon = keyfile_get_about_icon ();
 
+	//dialog erzeugen
 	about = gtk_about_dialog_new();
+	//pixbuf laden
 	logo = gdk_pixbuf_new_from_file (about_icon,&error);
 	if (error!=NULL){
 		g_error("%s",error->message);
 		g_error_free(error);
 		error = NULL;
 	}
+	//pfad freigeben
 	g_free(about_icon);
+	//Dialog zusammensetzten
 	gtk_about_dialog_set_logo(about,logo);
-
 	gtk_about_dialog_set_version (about,"0.6");
 	gtk_about_dialog_set_copyright(about,"Marcus Pries <email@marcus-pries.de>");
 	gtk_about_dialog_set_comments (about,"Mit diesem Programm kann man odt-Dateien sortieren,\nund daraus ein PDF-Dokument erstellen lassen.");
@@ -263,8 +270,9 @@ void button_about_clicked (GtkWidget *widget, gpointer data){
 	gtk_about_dialog_set_license_type (about,GTK_LICENSE_GPL_3_0);
 	gtk_about_dialog_set_authors (about,&authors);
 	gtk_about_dialog_set_documenters(about,&documenters);
-
+	//dialog ausführen
 	gtk_dialog_run (GTK_DIALOG (about));
+	//Speicher freigeben
 	g_object_unref (logo);
-  gtk_widget_destroy (about);
+  gtk_widget_destroy ((GtkWidget*)about);
 }
