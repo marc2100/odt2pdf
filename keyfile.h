@@ -67,4 +67,9 @@ void keyfile_set_search_dir (const gchar *folderpath);
 ///speichert den übergebenen Pfad in der Keyfile,
 ///um zu bestimmen, wohin das fertige PDF gespeichert wird
 void keyfile_set_save_as_dir (const gchar *path);
+
+///liefert den Pfad zum Icon, dass im About-Dialog angezeigt wird.
+///@return gchar *pfad
+///@warning muss mit g_free freigegeben werden
+gchar *keyfile_get_about_icon (void);
 #endif // KEYFILE_H

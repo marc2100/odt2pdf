@@ -225,3 +225,35 @@ void keyfile_set_save_as_dir (const gchar *path){
 		error = NULL;
 	}
 }
+
+///liefert den Pfad zum Icon, dass im About-Dialog angezeigt wird.
+///@return gchar *pfad
+///@warning muss mit g_free freigegeben werden
+gchar *keyfile_get_about_icon (void){
+	GError *error = NULL;
+	gchar *about_icon = NULL;
+
+	//checken ob Keyfile eingelesen wurde
+	if (global_keyfile==NULL)
+	{
+		g_warning ("Noch kein \"keyfile_init()\" aufgerufen\n");
+		if (!keyfile_init (NULL))
+		{
+			g_error ("Konnte Keyfile nicht laden, bitte erst keyfile_init() aufrufen!");
+		}
+	}
+
+	//String aus Keyfile laden
+	about_icon = g_key_file_get_string(global_keyfile,
+															"Datei",
+															"about_icon",
+															&error);
+	//auf fehler prüfen
+	if (error!=NULL||about_icon==NULL)
+	{
+		g_error("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+	return about_icon;
+}

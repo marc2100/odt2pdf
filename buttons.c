@@ -241,16 +241,19 @@ gtk_widget_destroy (dialog);
 void button_about_clicked (GtkWidget *widget, gpointer data){
 	GdkPixbuf *logo = NULL;
 	GError *error = NULL;
-	GtkWidget *about = gtk_about_dialog_new();
+	GtkAboutDialog *about = NULL;
 	gchar *authors[] = {"Marcus Pries <email@marcus-pries.de>",NULL};
 	gchar *documenters[] = {"Marcus Pries <email@marcus-pries.de>",NULL};
+	gchar *about_icon = keyfile_get_about_icon ();
 
-	logo = gdk_pixbuf_new_from_file ("./icon/Icon_odt2pdf_64x64.svg",&error);
+	about = gtk_about_dialog_new();
+	logo = gdk_pixbuf_new_from_file (about_icon,&error);
 	if (error!=NULL){
 		g_error("%s",error->message);
 		g_error_free(error);
 		error = NULL;
 	}
+	g_free(about_icon);
 	gtk_about_dialog_set_logo(about,logo);
 
 	gtk_about_dialog_set_version (about,"0.6");
@@ -262,5 +265,6 @@ void button_about_clicked (GtkWidget *widget, gpointer data){
 	gtk_about_dialog_set_documenters(about,&documenters);
 
 	gtk_dialog_run (GTK_DIALOG (about));
+	g_object_unref (logo);
   gtk_widget_destroy (about);
 }
