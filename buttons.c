@@ -276,3 +276,19 @@ void button_about_clicked (GtkWidget *widget, gpointer data){
 	g_object_unref (logo);
   gtk_widget_destroy ((GtkWidget*)about);
 }
+
+void button_help_clicked (GtkWidget *widget, gpointer data){
+	GError *error=NULL;
+	GString *folderpath=NULL;
+	folderpath = g_string_new ("file://");
+	folderpath = g_string_append (folderpath,g_get_current_dir());
+	folderpath = g_string_append (folderpath,"/odt2pdf-anleitung.txt");
+	g_print("%s\n",folderpath->str);
+	gtk_show_uri (NULL,folderpath->str,GDK_CURRENT_TIME,&error);
+	if (error!=NULL){
+		g_error("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+	g_string_free(folderpath,TRUE);
+}

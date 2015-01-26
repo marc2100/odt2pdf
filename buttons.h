@@ -41,6 +41,7 @@ void button_work_clicked(GtkWidget *widget, gpointer data);
 void button_open_clicked (GtkWidget *widget, gpointer data);
 void button_save_as_clicked (GtkWidget *widget, gpointer data);
 void button_about_clicked (GtkWidget *widget, gpointer data);
+void button_help_clicked (GtkWidget *widget, gpointer data);
 
 ///verfärbt die Buttons, sobald die Maus darüber ist (nur optische spielerei)
 void buttons_entered (GtkWidget *widget, gpointer data);
