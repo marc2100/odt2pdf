@@ -67,6 +67,15 @@
                         <property name="use_stock">True</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="gtk-setup-menu">
+                        <property name="label">gtk-preferences</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -316,6 +325,202 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window2">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkTable" id="table2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="n_rows">5</property>
+        <property name="n_columns">6</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Quelle:</property>
+          </object>
+          <packing>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_quelle">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">•</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFileChooserButton" id="filechooserbutton_quelle">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="right_attach">3</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Ziel:</property>
+          </object>
+          <packing>
+            <property name="top_attach">2</property>
+            <property name="bottom_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">PDF-Name:</property>
+          </object>
+          <packing>
+            <property name="top_attach">3</property>
+            <property name="bottom_attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_ziel">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">•</property>
+            <property name="invisible_char_set">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">2</property>
+            <property name="bottom_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_pdf_name">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">•</property>
+            <property name="invisible_char_set">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">3</property>
+            <property name="bottom_attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFileChooserButton" id="filechooserbutton_ziel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="right_attach">3</property>
+            <property name="top_attach">2</property>
+            <property name="bottom_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator6">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="right_attach">3</property>
+            <property name="top_attach">3</property>
+            <property name="bottom_attach">4</property>
           </packing>
         </child>
       </object>

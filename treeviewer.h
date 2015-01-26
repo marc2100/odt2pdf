@@ -31,7 +31,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "buttons.h"
 #include "dir_read.h"
 
-
+struct SETUP_WINDOW{
+	GtkWidget *setup_window;
+	GtkWidget *entry_quelle,*entry_ziel,*entry_pdf_name;
+	GtkWidget *filechooser_quelle,*filechooser_ziel;
+};
 
 enum {
   COLUMN_ID,

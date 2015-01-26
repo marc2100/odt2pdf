@@ -32,6 +32,7 @@ struct GUI_ELEMENTE{
 	GtkWidget *button_exit;			///<den Exit-Button
 	GtkWidget *button_work;			///<den Ausführen-Button
 	GtkWidget *statusbar;				///<die Statusbar
+	GtkWidget *setup_window;		///<Setup-Window
 };
 
 //globale Variablen
@@ -51,6 +52,7 @@ void gui_init (void){
 	GtkBuilder *builder = NULL;
 	builder = gtk_builder_new_from_file("odt2pdf-gtk.glade");
 	struct GUI_ELEMENTE *gui = &gui_global;
+	struct SETUP_WINDOW *setup = (struct SETUP_WINDOW*) g_malloc(sizeof(struct SETUP_WINDOW));
 
 	gui->mainwindow 		= GTK_WIDGET (gtk_builder_get_object(builder,"window1"));
 	gui->treeview				= GTK_WIDGET (gtk_builder_get_object(builder,"treeview1"));
@@ -58,6 +60,15 @@ void gui_init (void){
 	gui->button_exit		= GTK_WIDGET (gtk_builder_get_object(builder,"button_exit"));
 	gui->statusbar			= GTK_WIDGET (gtk_builder_get_object(builder,"statusbar1"));
   gui->button_work		= GTK_WIDGET (gtk_builder_get_object(builder,"button_work"));
+
+	//elemente des Setupwindow
+	setup->setup_window				= GTK_WIDGET (gtk_builder_get_object(builder,"window2"));
+	setup->entry_quelle				= GTK_WIDGET (gtk_builder_get_object(builder,"entry_quelle"));
+	setup->entry_ziel					= GTK_WIDGET (gtk_builder_get_object(builder,"entry_ziel"));
+	setup->entry_pdf_name			= GTK_WIDGET (gtk_builder_get_object(builder,"entry_pdf_name"));
+	setup->filechooser_quelle	= GTK_WIDGET (gtk_builder_get_object(builder,"filechooserbutton_quelle"));
+	setup->filechooser_ziel		= GTK_WIDGET (gtk_builder_get_object(builder,"filechooserbutton_ziel"));
+
 
 	//Eigenschaften des Main-Window setzen
 	gtk_window_set_title(GTK_WINDOW(gui->mainwindow), "odt2pft-gtk");
@@ -84,6 +95,7 @@ void gui_init (void){
 	g_signal_connect(gtk_builder_get_object(builder,"gtk-save-menu"),"activate",G_CALLBACK(button_work_clicked), NULL);
 	g_signal_connect(gtk_builder_get_object(builder,"gtk-about-menu"),"activate",G_CALLBACK(button_about_clicked), NULL);
 	g_signal_connect(gtk_builder_get_object(builder,"gtk-help-menu"),"activate",G_CALLBACK(button_help_clicked), NULL);
+	g_signal_connect(gtk_builder_get_object(builder,"gtk-setup-menu"),"activate",G_CALLBACK(button_setup_clicked), (gpointer)setup);
 
 	//Buttons einfärben, wenn mit Maus darüber
 	g_signal_connect(gui->button_refresh,"enter",G_CALLBACK(buttons_entered), NULL);

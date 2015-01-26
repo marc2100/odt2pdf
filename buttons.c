@@ -292,3 +292,11 @@ void button_help_clicked (GtkWidget *widget, gpointer data){
 	}
 	g_string_free(folderpath,TRUE);
 }
+
+void button_setup_clicked (GtkWidget *widget, gpointer data){
+	struct SETUP_WINDOW *setup = NULL;
+	setup = (struct SETUP_WINDOW*)data;
+
+	gtk_widget_show ((GtkWindow*)setup->setup_window);
+
+}
