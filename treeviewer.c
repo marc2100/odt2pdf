@@ -44,7 +44,6 @@ struct GUI_ELEMENTE gui_global;
 gchar * const string_viewer_header[] = {"ID","Datei"};
 
 
-
 ///initiiert die GUI, und startet damit das eigentliche Programm
 void gui_init (void){
 
@@ -61,20 +60,19 @@ void gui_init (void){
 	gui->statusbar			= GTK_WIDGET (gtk_builder_get_object(builder,"statusbar1"));
   gui->button_work		= GTK_WIDGET (gtk_builder_get_object(builder,"button_work"));
 
-	//elemente des Setupwindow
+	//Elemente des Setupwindow
 	setup->setup_window				= GTK_WIDGET (gtk_builder_get_object(builder,"window2"));
 	setup->entry_quelle				= GTK_WIDGET (gtk_builder_get_object(builder,"entry_quelle"));
 	setup->entry_ziel					= GTK_WIDGET (gtk_builder_get_object(builder,"entry_ziel"));
 	setup->entry_pdf_name			= GTK_WIDGET (gtk_builder_get_object(builder,"entry_pdf_name"));
 	setup->filechooser_quelle	= GTK_WIDGET (gtk_builder_get_object(builder,"filechooserbutton_quelle"));
 	setup->filechooser_ziel		= GTK_WIDGET (gtk_builder_get_object(builder,"filechooserbutton_ziel"));
-
+	setup->setup_save_button 	= GTK_WIDGET (gtk_builder_get_object(builder,"setup-save-button"));
 
 	//Eigenschaften des Main-Window setzen
 	gtk_window_set_title(GTK_WINDOW(gui->mainwindow), "odt2pft-gtk");
   gtk_window_set_default_size(GTK_WINDOW(gui->mainwindow), 1500, 400);
   gtk_window_set_position(GTK_WINDOW(gui->mainwindow), GTK_WIN_POS_CENTER);
-
 
 	//viewer "nullen"
 	gtk_tree_view_set_model (gui_get_gtk_tree_viewer(),NULL);

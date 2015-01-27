@@ -35,6 +35,7 @@ struct SETUP_WINDOW{
 	GtkWidget *setup_window;
 	GtkWidget *entry_quelle,*entry_ziel,*entry_pdf_name;
 	GtkWidget *filechooser_quelle,*filechooser_ziel;
+	GtkWidget *setup_save_button;
 };
 
 enum {

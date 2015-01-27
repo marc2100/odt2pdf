@@ -55,3 +55,7 @@ void interface_ausgrauen (gboolean status){
 	buttons_ausgrauen(status);
 	gtk_widget_set_sensitive((GtkWidget*)gui_get_gtk_tree_viewer(),status);
 }
+
+void  entry_save (GtkWidget *widget, gpointer data){
+	g_print("Hallo\n");
+}
