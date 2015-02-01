@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "treeviewer.h"
 #include "dir_read.h"
 #include "keyfile.h"
+#include "setup_window.h"
 
 ///@brief definiert die Programm Version
 #define odt2pdf_gtk_version "0.7"
@@ -49,5 +50,5 @@ void buttons_ausgrauen(gboolean status);
 ///@param status True=aktive False=ausgegraut
 void interface_ausgrauen (gboolean status);
 
-void setup_save (GtkWidget *widget, gpointer data);
+
 #endif // HELPER_H

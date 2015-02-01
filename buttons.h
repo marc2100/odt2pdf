@@ -32,6 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "keyfile.h"
 #include "temp_dir.h"
 #include "helper.h"
+#include "setup_window.h"
 
 
 ///G_CALLBACK-Funktion die

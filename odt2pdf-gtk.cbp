@@ -60,6 +60,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="setup_window.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="setup_window.h" />
 		<Unit filename="temp_dir.c">
 			<Option compilerVar="CC" />
 		</Unit>

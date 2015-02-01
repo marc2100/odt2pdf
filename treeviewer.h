@@ -30,17 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "treeviewer.h"
 #include "buttons.h"
 #include "dir_read.h"
+#include "setup_window.h"
 
-///@struct SETUP_WINDOW
-///beinhaltet alle GUI Elemente des Setup-Fensters
-struct SETUP_WINDOW{
-	GtkWidget *setup_window;			///<window
-	GtkWidget *statusbar_setup;		///<statusbar
-	GtkWidget *entry_pdf_name;		///<ausgabename für Datei
-	GtkWidget *filechooser_quelle;///<filechooser für quelle
-	GtkWidget *filechooser_ziel;	///<filechoosser für ziel
-	GtkWidget *setup_save_button;	///<speichern Button
-};
 
 enum {
   COLUMN_ID,

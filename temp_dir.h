@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "treeviewer.h"
 #include "dir_read.h"
 #include "keyfile.h"
+#include "setup_window.h"
 
 ///speichert das aktuelle Temp_Verzeichnis
 void temp_dir_save (gchar *dir);

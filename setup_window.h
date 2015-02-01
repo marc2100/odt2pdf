@@ -16,22 +16,34 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-///@file dir_read.h
-///Hier sind alle Funktionen deklariert um den Quellordner,
-///mit den odt-Dateien auszulesen.
 
-#ifndef DIR_READ_H
-#define DIR_READ_H
+///@file setup_window.h
+///Funktionen für das Setupfenster
+#ifndef SETUP_WINDOW_H
+#define SETUP_WINDOW_H
 
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include "treeviewer.h"
 #include "buttons.h"
-#include "setup_window.h"
-#include "keyfile.h"
+#include "dir_read.h"
 
-///ließt die Einträge aus dem in der Keyfile
-///angegebenen Ordner aus
-void ordner_auslesen (GtkListStore* store);
 
-#endif // DIR_READ_H
+///@struct SETUP_WINDOW
+///beinhaltet alle GUI Elemente des Setup-Fensters
+struct SETUP_WINDOW{
+	GtkWidget *setup_window;			///<window
+	GtkWidget *statusbar_setup;		///<statusbar
+	GtkWidget *entry_pdf_name;		///<ausgabename für Datei
+	GtkWidget *filechooser_quelle;///<filechooser für quelle
+	GtkWidget *filechooser_ziel;	///<filechoosser für ziel
+	GtkWidget *setup_save_button;	///<speichern Button
+};
+
+///Callback für den Speichernbutton
+void setup_save (GtkWidget *widget, gpointer data);
+
+///erstellt das Setupfenster und lässt es anzeigen
+void setup_run (gpointer data);
+
+#endif // SETUP_WINDOW_H
