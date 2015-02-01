@@ -67,15 +67,6 @@
                         <property name="use_stock">True</property>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="gtk-setup-menu">
-                        <property name="label">gtk-preferences</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
                   </object>
                 </child>
               </object>
@@ -83,7 +74,6 @@
             <child>
               <object class="GtkMenuItem" id="menuitem2">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Bearbeiten</property>
                 <property name="use_underline">True</property>
@@ -92,35 +82,8 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem6">
-                        <property name="label">gtk-cut</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem7">
-                        <property name="label">gtk-copy</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem8">
-                        <property name="label">gtk-paste</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem9">
-                        <property name="label">gtk-delete</property>
+                      <object class="GtkImageMenuItem" id="gtk-setup-menu">
+                        <property name="label">gtk-preferences</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -402,6 +365,18 @@
           <placeholder/>
         </child>
         <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -413,30 +388,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="entry_quelle">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="invisible_char">•</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkFileChooserButton" id="filechooserbutton_quelle">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="right_attach">3</property>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
             <property name="top_attach">1</property>
             <property name="bottom_attach">2</property>
           </packing>
@@ -464,24 +422,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="entry_ziel">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="invisible_char">•</property>
-            <property name="invisible_char_set">True</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="top_attach">2</property>
-            <property name="bottom_attach">3</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkEntry" id="entry_pdf_name">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -500,13 +440,16 @@
           </packing>
         </child>
         <child>
+          <placeholder/>
+        </child>
+        <child>
           <object class="GtkFileChooserButton" id="filechooserbutton_ziel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
           </object>
           <packing>
-            <property name="left_attach">2</property>
-            <property name="right_attach">3</property>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
             <property name="top_attach">2</property>
             <property name="bottom_attach">3</property>
           </packing>
@@ -525,6 +468,36 @@
             <property name="top_attach">3</property>
             <property name="bottom_attach">4</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <object class="GtkStatusbar" id="statusbar_setup">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">2</property>
+          </object>
+          <packing>
+            <property name="right_attach">3</property>
+            <property name="top_attach">4</property>
+            <property name="bottom_attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

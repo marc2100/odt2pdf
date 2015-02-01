@@ -295,30 +295,21 @@ void button_help_clicked (GtkWidget *widget, gpointer data){
 
 void button_setup_clicked (GtkWidget *widget, gpointer data){
 	struct SETUP_WINDOW *setup = NULL;
-	static GtkEntryBuffer *entry_buffer_quelle,*entry_buffer_ziel,*entry_buffer_pdf_name;
+	static GtkEntryBuffer *entry_buffer_pdf_name;
 	setup = (struct SETUP_WINDOW*)data;
 	gchar *txt_ptr = NULL;
 
 	//Eigenschaften des Setup-Window setzen
 	gtk_window_set_title(GTK_WINDOW(setup->setup_window),"odt2pft-gtk Setup");
-  gtk_window_set_default_size(GTK_WINDOW(setup->setup_window), 800, 200);
+  gtk_window_set_default_size(GTK_WINDOW(setup->setup_window), 500, 200);
   gtk_window_set_position(GTK_WINDOW(setup->setup_window), GTK_WIN_POS_CENTER);
 	//verhindern, das das Fenster gelöscht wird, nur verstecken
 	g_signal_connect(setup->setup_window,"delete-event",G_CALLBACK(gtk_widget_hide_on_delete),NULL);
 
-	//Texteintries vorbereiten
-	txt_ptr = keyfile_get_searchdir();
-	entry_buffer_quelle 	= gtk_entry_buffer_new(txt_ptr,-1);
-	g_free(txt_ptr);
-	txt_ptr = keyfile_get_pdf_full_path();
-	entry_buffer_ziel			= gtk_entry_buffer_new(txt_ptr,-1);
-	g_free(txt_ptr);
+	//Texteintry vorbereiten
 	txt_ptr = keyfile_get_pdf_name();
 	entry_buffer_pdf_name	= gtk_entry_buffer_new(txt_ptr,-1);
 	g_free(txt_ptr);
-
-	gtk_entry_set_buffer(setup->entry_quelle,entry_buffer_quelle);
-	gtk_entry_set_buffer(setup->entry_ziel,entry_buffer_ziel);
 	gtk_entry_set_buffer(setup->entry_pdf_name,entry_buffer_pdf_name);
 
 	//filechooser_quelle vorbereiten
@@ -333,9 +324,12 @@ void button_setup_clicked (GtkWidget *widget, gpointer data){
 	g_free(txt_ptr);
 
 	//Signale verbinden
-	g_signal_connect(setup->setup_save_button,"clicked",G_CALLBACK(entry_save),NULL);
+	g_signal_connect(setup->setup_save_button,"clicked",G_CALLBACK(setup_save),(gpointer)setup);
+
+	//statusbar resetten
+	gtk_statusbar_remove_all (setup->statusbar_setup,0);
 
 	//Fenster anzeigen
-	gtk_widget_show ((GtkWindow*)setup->setup_window);
+	gtk_widget_show (setup->setup_window);
 
 }

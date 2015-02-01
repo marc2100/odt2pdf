@@ -62,8 +62,7 @@ void gui_init (void){
 
 	//Elemente des Setupwindow
 	setup->setup_window				= GTK_WIDGET (gtk_builder_get_object(builder,"window2"));
-	setup->entry_quelle				= GTK_WIDGET (gtk_builder_get_object(builder,"entry_quelle"));
-	setup->entry_ziel					= GTK_WIDGET (gtk_builder_get_object(builder,"entry_ziel"));
+	setup->statusbar_setup		= GTK_WIDGET (gtk_builder_get_object(builder,"statusbar_setup"));
 	setup->entry_pdf_name			= GTK_WIDGET (gtk_builder_get_object(builder,"entry_pdf_name"));
 	setup->filechooser_quelle	= GTK_WIDGET (gtk_builder_get_object(builder,"filechooserbutton_quelle"));
 	setup->filechooser_ziel		= GTK_WIDGET (gtk_builder_get_object(builder,"filechooserbutton_ziel"));

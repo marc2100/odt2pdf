@@ -49,5 +49,5 @@ void buttons_ausgrauen(gboolean status);
 ///@param status True=aktive False=ausgegraut
 void interface_ausgrauen (gboolean status);
 
-void entry_save (GtkWidget *widget, gpointer data);
+void setup_save (GtkWidget *widget, gpointer data);
 #endif // HELPER_H

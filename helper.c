@@ -56,6 +56,13 @@ void interface_ausgrauen (gboolean status){
 	gtk_widget_set_sensitive((GtkWidget*)gui_get_gtk_tree_viewer(),status);
 }
 
-void  entry_save (GtkWidget *widget, gpointer data){
-	g_print("Hallo\n");
+void  setup_save (GtkWidget *widget, gpointer data){
+	struct SETUP_WINDOW *setup = (struct SETUP_WINDOW*) data;
+	static gint message_id = 0;
+
+
+	if (message_id != 0){
+		gtk_statusbar_remove (setup->statusbar_setup,0,message_id);
+	}
+	message_id = gtk_statusbar_push(setup->statusbar_setup,0,"Einstellungen wurden gespeichert");
 }

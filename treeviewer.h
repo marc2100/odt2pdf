@@ -31,11 +31,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "buttons.h"
 #include "dir_read.h"
 
+///@struct SETUP_WINDOW
+///beinhaltet alle GUI Elemente des Setup-Fensters
 struct SETUP_WINDOW{
-	GtkWidget *setup_window;
-	GtkWidget *entry_quelle,*entry_ziel,*entry_pdf_name;
-	GtkWidget *filechooser_quelle,*filechooser_ziel;
-	GtkWidget *setup_save_button;
+	GtkWidget *setup_window;			///<window
+	GtkWidget *statusbar_setup;		///<statusbar
+	GtkWidget *entry_pdf_name;		///<ausgabename für Datei
+	GtkWidget *filechooser_quelle;///<filechooser für quelle
+	GtkWidget *filechooser_ziel;	///<filechoosser für ziel
+	GtkWidget *setup_save_button;	///<speichern Button
 };
 
 enum {
