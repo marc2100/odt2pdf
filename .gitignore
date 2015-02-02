@@ -30,6 +30,7 @@
 
 /bin/
 /obj/
+doku/
 *.depend
 *.layout
 .*

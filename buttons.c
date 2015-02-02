@@ -295,7 +295,7 @@ void button_help_clicked (GtkWidget *widget, gpointer data){
 	GString *folderpath=NULL;
 	folderpath = g_string_new ("file://");
 	folderpath = g_string_append (folderpath,g_get_current_dir());
-	folderpath = g_string_append (folderpath,"/odt2pdf-anleitung.txt");
+	folderpath = g_string_append (folderpath,"/dokumentation_odt2pdf-gtk.pdf");
 	g_print("%s\n",folderpath->str);
 	gtk_show_uri (NULL,folderpath->str,GDK_CURRENT_TIME,&error);
 	if (error!=NULL){
