@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 "Marcus Pries"
+Copyright (c) 2014-2015 "Marcus Pries"
 
 This file is part of odt2pdf-gtk.
 
@@ -25,7 +25,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 void  setup_save (GtkWidget *widget, gpointer data){
 	struct SETUP_WINDOW *setup = (struct SETUP_WINDOW*) data;
 	static gint message_id = 0;
+	gchar *text_buffer = NULL;
 
+	text_buffer = gtk_file_chooser_get_current_folder(setup->filechooser_quelle);
+	keyfile_set_search_dir(text_buffer);
+	g_print("Quelle:\t%s\n",text_buffer);
+	g_free(text_buffer);
+
+	text_buffer = gtk_file_chooser_get_current_folder(setup->filechooser_ziel);
+	keyfile_set_save_as_dir(text_buffer);
+	g_print("Ziel:\t%s\n",text_buffer);
+	g_free(text_buffer);
+
+	text_buffer = g_strdup(gtk_entry_get_text(setup->entry_pdf_name));
+	keyfile_set_pdf_name(text_buffer);
+	g_print("Name:\t%s\n",text_buffer);
+	g_free(text_buffer);
 
 	if (message_id != 0){
 		gtk_statusbar_remove (setup->statusbar_setup,0,message_id);

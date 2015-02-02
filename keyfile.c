@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 "Marcus Pries"
+Copyright (c) 2014-2015 "Marcus Pries"
 
 This file is part of odt2pdf-gtk.
 
@@ -256,4 +256,19 @@ gchar *keyfile_get_about_icon (void){
 		error = NULL;
 	}
 	return about_icon;
+}
+
+///speichert den Dateiname des outputs in der Keyfile
+void keyfile_set_pdf_name (const gchar *name){
+	GError *error = NULL;
+
+	//neuen Dateinamen speichern
+	g_key_file_set_string(global_keyfile,"Datei","pdfname",name);
+	//keyfile speichern auf HDD, damit die einstellungen erhalten bleiben
+	g_key_file_save_to_file(global_keyfile,keyfile_file,&error);
+	if (error!=NULL){
+		g_error("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
 }

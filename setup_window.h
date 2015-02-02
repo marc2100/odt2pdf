@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 "Marcus Pries"
+Copyright (c) 2014-2015 "Marcus Pries"
 
 This file is part of odt2pdf-gtk.
 
@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "treeviewer.h"
 #include "buttons.h"
 #include "dir_read.h"
+#include "keyfile.h"
 
 
 ///@struct SETUP_WINDOW

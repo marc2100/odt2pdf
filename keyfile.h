@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 "Marcus Pries"
+Copyright (c) 2014-2015 "Marcus Pries"
 
 This file is part of odt2pdf-gtk.
 
@@ -61,12 +61,15 @@ gchar *keyfile_get_pdf_name (void);
 ///@return gchar *filename_full_path
 gchar *keyfile_get_pdf_full_path (void);
 
-///speichert den übergebenen Pfad in der Keyfile
+///speichert den übergebenen Pfad des Quellordners in der Keyfile
 void keyfile_set_search_dir (const gchar *folderpath);
 
 ///speichert den übergebenen Pfad in der Keyfile,
 ///um zu bestimmen, wohin das fertige PDF gespeichert wird
 void keyfile_set_save_as_dir (const gchar *path);
+
+///speichert den Dateiname des outputs in der Keyfile
+void keyfile_set_pdf_name (const gchar *name);
 
 ///liefert den Pfad zum Icon, dass im About-Dialog angezeigt wird.
 ///@return gchar *pfad
