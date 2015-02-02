@@ -186,6 +186,20 @@ void pdftk_child_watch_func (GPid pdftk_pid,gint status,gpointer user_data){
 	}
 	//Pid schließen (ist unter UNIX nicht nötig)
 	g_spawn_close_pid(pdftk_pid);
+	//fertiges PDF direkt anzeigen
+	GString *folderpath=NULL;
+	folderpath = g_string_new ("file://");
+	folderpath = g_string_append (folderpath,keyfile_get_outputdir());
+	folderpath = g_string_append (folderpath,"/");
+	folderpath = g_string_append (folderpath,keyfile_get_pdf_name());
+	g_print("pdf_anzeigen:\t%s\n",folderpath->str);
+	gtk_show_uri (NULL,folderpath->str,GDK_CURRENT_TIME,&error);
+	if (error!=NULL){
+		g_warning("%s",error->message);
+		g_error_free(error);
+		error = NULL;
+	}
+	g_string_free(folderpath,TRUE);
 	interface_ausgrauen(TRUE);
 	temp_dir_delete();
 }
