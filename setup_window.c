@@ -27,14 +27,14 @@ void  setup_save (GtkWidget *widget, gpointer data){
 	static gint message_id = 0;
 	gchar *text_buffer = NULL;
 
-	text_buffer = gtk_file_chooser_get_current_folder(setup->filechooser_quelle);
-	keyfile_set_search_dir(text_buffer);
-	g_print("Quelle:\t%s\n",text_buffer);
+	text_buffer = gtk_file_chooser_get_uri(setup->filechooser_quelle);
+	keyfile_set_search_dir(text_buffer+7);
+	g_print("Quelle:\t%s\n",text_buffer+7);
 	g_free(text_buffer);
 
-	text_buffer = gtk_file_chooser_get_current_folder(setup->filechooser_ziel);
-	keyfile_set_save_as_dir(text_buffer);
-	g_print("Ziel:\t%s\n",text_buffer);
+	text_buffer = gtk_file_chooser_get_uri(setup->filechooser_ziel);
+	keyfile_set_save_as_dir(text_buffer+7);
+	g_print("Ziel:\t%s\n",text_buffer+7);
 	g_free(text_buffer);
 
 	text_buffer = g_strdup(gtk_entry_get_text(setup->entry_pdf_name));
