@@ -69,11 +69,13 @@ void setup_run (gpointer data){
 	gtk_entry_set_buffer(setup->entry_pdf_name,entry_buffer_pdf_name);
 
 	//filechooser_quelle vorbereiten
+	gtk_file_chooser_button_set_title (setup->filechooser_quelle,"Quellordner wählen");
 	txt_ptr = keyfile_get_searchdir();
 	gtk_file_chooser_set_action(setup->filechooser_quelle,GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
 	gtk_file_chooser_set_current_folder(setup->filechooser_quelle,txt_ptr);
 	g_free(txt_ptr);
 	//filechooser_ziel vorbereiten
+	gtk_file_chooser_button_set_title (setup->filechooser_ziel,"Zielordner wählen");
 	txt_ptr = keyfile_get_outputdir();
 	gtk_file_chooser_set_action(setup->filechooser_ziel,GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
 	gtk_file_chooser_set_current_folder(setup->filechooser_ziel,txt_ptr);
