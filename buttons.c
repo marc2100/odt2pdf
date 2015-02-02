@@ -280,7 +280,6 @@ void button_about_clicked (GtkWidget *widget, gpointer data){
 	gtk_about_dialog_set_version (about,odt2pdf_gtk_version);
 	gtk_about_dialog_set_copyright(about,"Marcus Pries <email@marcus-pries.de>");
 	gtk_about_dialog_set_comments (about,"Mit diesem Programm kann man odt-Dateien sortieren,\nund daraus ein PDF-Dokument erstellen lassen.");
-	gtk_about_dialog_set_license (about,"GPL 3.0 or later");
 	gtk_about_dialog_set_license_type (about,GTK_LICENSE_GPL_3_0);
 	gtk_about_dialog_set_authors (about,&authors);
 	gtk_about_dialog_set_documenters(about,&documenters);
