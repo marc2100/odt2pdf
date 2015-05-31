@@ -3,7 +3,7 @@ CC  = /usr/bin/gcc
 CFLAGS = `pkg-config --cflags --libs gtk+-3.0` -Wall -O2 -s
 LDFLAGS = `pkg-config --libs gtk+-3.0`
 
-SOURCES= buttons.c dir_read.c helper.c keyfile.c main.c temp_dir.c treeviewer.c
+SOURCES= buttons.c dir_read.c helper.c keyfile.c main.c temp_dir.c treeviewer.c setup_window.c
 OBJECTS=$(SOURCES:.c=.o)
 
 EXECUTABLE=odt2pdf-gtk
