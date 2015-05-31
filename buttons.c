@@ -33,11 +33,13 @@ void button_refresh_clicked(GtkWidget *widget, gpointer data)
 
 }
 
+///beendet das Programm
 void button_exit_clicked(GtkWidget *widget, gpointer data)
 {
 	gtk_main_quit();
 }
 
+///startet die Umwandlung/sortierung von odt zu pdf
 void button_work_clicked(GtkWidget *widget, gpointer data){
 	GError *error=NULL;
 	GPtrArray *unoconv_argv=NULL;
@@ -106,7 +108,7 @@ void button_work_clicked(GtkWidget *widget, gpointer data){
 	interface_ausgrauen(FALSE);
 }
 
-//Ändert die Hintergrundfarbe der Buttons, wenn mit Maus darüber
+///Ändert die Hintergrundfarbe der Buttons, wenn mit Maus darüber
 void buttons_entered (GtkWidget *widget, gpointer data){
   GdkRGBA color;
   color.red = 27000;
@@ -117,7 +119,7 @@ void buttons_entered (GtkWidget *widget, gpointer data){
 
 }
 
-//unoconv_pid_watch wird aufgerufen sobald der unoconv-Prozess beendet ist
+///unoconv_pid_watch wird aufgerufen sobald der unoconv-Prozess beendet ist
 void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 	GError *error = NULL;
 
@@ -173,7 +175,7 @@ void unoconv_child_watch_func (GPid unoconv_pid,gint status,gpointer user_data){
 		interface_ausgrauen(TRUE);
 }
 
-//pdftk_pid_watch wird aufgerufen sobald der pdftk-Prozess beendet ist
+///pdftk_pid_watch wird aufgerufen sobald der pdftk-Prozess beendet ist
 void pdftk_child_watch_func (GPid pdftk_pid,gint status,gpointer user_data){
 	GError *error = NULL;
 
@@ -204,6 +206,7 @@ void pdftk_child_watch_func (GPid pdftk_pid,gint status,gpointer user_data){
 	temp_dir_delete();
 }
 
+///erzeugt eine Ordnerauswahl aus der gelesen wird
 void button_open_clicked (GtkWidget *widget, gpointer data){
 	//Dialog für Ordner auswahl erstellen
 	GtkWidget *dialog;
@@ -230,6 +233,7 @@ void button_open_clicked (GtkWidget *widget, gpointer data){
 gtk_widget_destroy (dialog);
 }
 
+///setzt das Ziel, wohin gespeichert werden soll
 void button_save_as_clicked (GtkWidget *widget, gpointer data){
 	//Dialog für Ordner auswahl erstellen
 	GtkWidget *dialog;
@@ -256,6 +260,7 @@ void button_save_as_clicked (GtkWidget *widget, gpointer data){
 gtk_widget_destroy (dialog);
 }
 
+///zeigt das about-fenster an
 void button_about_clicked (GtkWidget *widget, gpointer data){
 	GdkPixbuf *logo = NULL;
 	GError *error = NULL;
@@ -265,7 +270,7 @@ void button_about_clicked (GtkWidget *widget, gpointer data){
 	gchar *about_icon = keyfile_get_about_icon ();
 
 	//dialog erzeugen
-	about = gtk_about_dialog_new();
+	about = (GtkAboutDialog*)gtk_about_dialog_new();
 	//pixbuf laden
 	logo = gdk_pixbuf_new_from_file (about_icon,&error);
 	if (error!=NULL){
@@ -281,8 +286,8 @@ void button_about_clicked (GtkWidget *widget, gpointer data){
 	gtk_about_dialog_set_copyright(about,"Marcus Pries <email@marcus-pries.de>");
 	gtk_about_dialog_set_comments (about,"Mit diesem Programm kann man odt-Dateien sortieren,\nund daraus ein PDF-Dokument erstellen lassen.");
 	gtk_about_dialog_set_license_type (about,GTK_LICENSE_GPL_3_0);
-	gtk_about_dialog_set_authors (about,&authors);
-	gtk_about_dialog_set_documenters(about,&documenters);
+	gtk_about_dialog_set_authors (about,(const char**)&authors);
+	gtk_about_dialog_set_documenters(about,(const char**)&documenters);
 	//dialog ausführen
 	gtk_dialog_run (GTK_DIALOG (about));
 	//Speicher freigeben
@@ -290,6 +295,7 @@ void button_about_clicked (GtkWidget *widget, gpointer data){
   gtk_widget_destroy ((GtkWidget*)about);
 }
 
+///zeigt die Hilfefunktion an
 void button_help_clicked (GtkWidget *widget, gpointer data){
 	GError *error=NULL;
 	GString *folderpath=NULL;
@@ -306,6 +312,7 @@ void button_help_clicked (GtkWidget *widget, gpointer data){
 	g_string_free(folderpath,TRUE);
 }
 
+///startet das Setup
 void button_setup_clicked (GtkWidget *widget, gpointer data){
 	//startet das Setupfenster
 	setup_run (data);
