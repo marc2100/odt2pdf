@@ -27,25 +27,25 @@ void  setup_save (GtkWidget *widget, gpointer data){
 	static gint message_id = 0;
 	gchar *text_buffer = NULL;
 
-	text_buffer = gtk_file_chooser_get_uri(setup->filechooser_quelle);
+	text_buffer = gtk_file_chooser_get_uri((GtkFileChooser*)setup->filechooser_quelle);
 	keyfile_set_search_dir(text_buffer+7);
 	g_print("Quelle:\t%s\n",text_buffer+7);
 	g_free(text_buffer);
 
-	text_buffer = gtk_file_chooser_get_uri(setup->filechooser_ziel);
+	text_buffer = gtk_file_chooser_get_uri((GtkFileChooser*)setup->filechooser_ziel);
 	keyfile_set_save_as_dir(text_buffer+7);
 	g_print("Ziel:\t%s\n",text_buffer+7);
 	g_free(text_buffer);
 
-	text_buffer = g_strdup(gtk_entry_get_text(setup->entry_pdf_name));
+	text_buffer = g_strdup(gtk_entry_get_text((GtkEntry*)setup->entry_pdf_name));
 	keyfile_set_pdf_name(text_buffer);
 	g_print("Name:\t%s\n",text_buffer);
 	g_free(text_buffer);
 
 	if (message_id != 0){
-		gtk_statusbar_remove (setup->statusbar_setup,0,message_id);
+		gtk_statusbar_remove ((GtkStatusbar*)setup->statusbar_setup,0,message_id);
 	}
-	message_id = gtk_statusbar_push(setup->statusbar_setup,0,"Einstellungen wurden gespeichert");
+	message_id = gtk_statusbar_push((GtkStatusbar*)setup->statusbar_setup,0,"Einstellungen wurden gespeichert");
 }
 
 ///erstellt das Setupfenster und lässt es anzeigen
@@ -66,26 +66,26 @@ void setup_run (gpointer data){
 	txt_ptr = keyfile_get_pdf_name();
 	entry_buffer_pdf_name	= gtk_entry_buffer_new(txt_ptr,-1);
 	g_free(txt_ptr);
-	gtk_entry_set_buffer(setup->entry_pdf_name,entry_buffer_pdf_name);
+	gtk_entry_set_buffer((GtkEntry*)setup->entry_pdf_name,entry_buffer_pdf_name);
 
 	//filechooser_quelle vorbereiten
-	gtk_file_chooser_button_set_title (setup->filechooser_quelle,"Quellordner wählen");
+	gtk_file_chooser_button_set_title ((GtkFileChooserButton*)setup->filechooser_quelle,"Quellordner wählen");
 	txt_ptr = keyfile_get_searchdir();
-	gtk_file_chooser_set_action(setup->filechooser_quelle,GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-	gtk_file_chooser_set_current_folder(setup->filechooser_quelle,txt_ptr);
+	gtk_file_chooser_set_action((GtkFileChooser*)setup->filechooser_quelle,GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+	gtk_file_chooser_set_current_folder((GtkFileChooser*)setup->filechooser_quelle,txt_ptr);
 	g_free(txt_ptr);
 	//filechooser_ziel vorbereiten
-	gtk_file_chooser_button_set_title (setup->filechooser_ziel,"Zielordner wählen");
+	gtk_file_chooser_button_set_title ((GtkFileChooserButton*)setup->filechooser_ziel,"Zielordner wählen");
 	txt_ptr = keyfile_get_outputdir();
-	gtk_file_chooser_set_action(setup->filechooser_ziel,GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-	gtk_file_chooser_set_current_folder(setup->filechooser_ziel,txt_ptr);
+	gtk_file_chooser_set_action((GtkFileChooser*)setup->filechooser_ziel,GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+	gtk_file_chooser_set_current_folder((GtkFileChooser*)setup->filechooser_ziel,txt_ptr);
 	g_free(txt_ptr);
 
 	//Signale verbinden
 	g_signal_connect(setup->setup_save_button,"clicked",G_CALLBACK(setup_save),(gpointer)setup);
 
 	//statusbar resetten
-	gtk_statusbar_remove_all (setup->statusbar_setup,0);
+	gtk_statusbar_remove_all ((GtkStatusbar*)setup->statusbar_setup,0);
 
 	//Fenster anzeigen
 	gtk_widget_show (setup->setup_window);
